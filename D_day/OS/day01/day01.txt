@@ -1,0 +1,236 @@
++ UNIX (Ken Thompson & Dennis Ritchie -- AT & T Bell Labs)
+		- PDP-7 (Program Data Processor) -- Mainframe computer
+		- Multi-user system.
+	|- Linux (Linus Torvalds)
+
++ UNIX Philosophy:
+	- Everything is a file.
+		-. regular files
+		d. directory -- file
+		l. link -- file
+		p. pipe -- file
+		s. socket -- file
+		c. char devices -- file
+		b. block devices -- file
+		* ls -l /dev/
+	- UNIX is by the programmer for the programmer of the programmer.
+
++ Linux Directory Structure:
+	- Root of FileSystem "/"
+		|- boot -- linux booting files (kernel-vmlinuz, initramfs, bootloader-grub)
+		|- bin -- linux commands (ls, pwd, ...)
+		|- sbin -- admin linux commands (useradd, fdisk, ...) -- sudo
+		|- lib -- shared libraries/objects (.so), device drivers/modules (.ko)
+		|- usr -- installed programs
+		|- etc -- hardware & software configurations.
+		|- opt -- optional
+		|- var -- system logs
+		|- srv -- servers: web servers/ftp servers.
+		|- mnt -- empty directory for mounting CD/DVD or USB ...
+		|- media -- for auto-mounting CD/DVD or USB ...
+		|- tmp -- temporary files -- auto deleted on shutdown.
+		|- dev -- device files
+		|- sys -- system/device files
+		|- proc -- processes info & system info e.g. cat /proc/cpuinfo
+		|- root -- home directory of admin user (username=root)
+		|- home -- contains one directory per user -- home directory of user.
+			|- sunbeam <-- home directory of "sunbeam" user.
+				|- Desktop
+				|- Downloads
+				|- Documents
+				|- Music
+				|- Pictures
+				|- Videos
+				|- ...
+	- Linux file/directory names are case-sensitive.
+		- Linux File Systems -- ext3/ext4
+	- absolute & relative path
+		/
+		|- home
+			|- nilesh
+				|- Movies
+					|- Bollywood
+					|- Hollywood
+						|- FountainHead.avi
+		
+		* --> /home/nilesh/Movies/Hollywood/FountainHead.avi
+		nilesh --> Movies/Hollywood/FountainHead.avi			
+		Movies --> Hollywood/FountainHead.avi
+		Hollywood --> FountainHead.avi
+		Bollywood --> ../Hollywood/FountainHead.avi
+
+	- Directories:
+		.	--> Current directory
+		..	--> Parent directory
+		~	--> User's Home directory.
+
++ Linux FileSystem Commands:
+	- man --> manual
+		- man man
+			1 -- linux commands
+			2 -- linux system calls
+			3 -- library functions
+			5 -- proc files
+			7 -- documentations
+			8 -- linux admin commands
+			9 -- linux kernel functions
+		- man section word
+	- pwd
+	- cd dir_path
+	- ls
+		- ls --> show contents of current dir.
+		- ls dir_path --> show contents of given dir.
+		- options:
+			-l -- long listing
+				type|permissions|link count|user|group|size|modified|name
+			-h -- show file size in human readable format (K,M,G)
+			-a -- hidden files (Hidden file name start with .).
+			-A -- hidden files except . & ..
+			-R -- recursive listing.
+	- cat
+		- cat -- echos each line entered -- Ctrl+D.
+		- cat > filepath --> creates a new file with given content.
+		- cat >> filepath --> append into the file.
+		- cat filepath --> displays the file.
+		- options:
+			-n -- show line numbers.
+	- tac
+		- tac filepath
+	- rev
+		- rev filepath
+	- cp
+		- cp src_filepath dest_dirpath
+		- cp src_filepath dest_filepath
+		- cp -R src_dirpath dest_dirpath
+	- mv
+		- mv src_filepath dest_dirpath
+		- mv src_filepath dest_filepath --> rename the file.
+		- mv src_dirpath dest_dirpath
+	- rm
+		- rm filepath
+		- rm -R dirpath
+		- options:
+			-i : interactive
+			-f : forceful delete
+	- mkdir
+		- mkdir dirpath
+		- options:
+			-p : create parent dirs if not present.
+	- rmdir
+		- rmdir dirpath -- deletes empty dirs only.
+	- stat	
+		- stat filepath -- displays file metadata/info.
+	- ln -- will learn it later.
++ Linux Process & Memory Commands:
+	- top -- task manager
+	- ps -- processes snapshot (show current processes)
+		- ps -e
+		- ps -t terminal
+	- kill -- send signal to process.
+		- signals: 2) INT, * 9) KILL, 19) STOP, 18) CONT
+		- kill -l -- list all signals.
+		- kill -signum pid
+	- free -m -h
+		- 
++ Linux Multi-user Commands:
+	- Linux is multi-user system.
+	- Terminal -- Input + Output -- TeleTYpe terminals (tty).
+	- Linux 7 (1 + 6) seven (real) terminals
+		- Ctrl+Alt+F1 -- GUI(X) terminal.
+			- Multiple Terminal windows -- Psuedo Terminals -- pts/n
+		- Ctrl+Alt+F2	--> tty2
+		- Ctrl+Alt+F... --> tty...
+		- Ctrl+Alt+F7 	--> tty7
+	- Commands:
+		- tty -- displays current terminal name
+		- who -- show all users logged in on all terminals.
+		- whoami -- show current user name.
+		- who am i -- show current user name, terminal & login time.
+		- w -- similar to who.
+		- users -- show all users connected to the system.
++ Linux Misc Commands:
+	- cal
+		- cal -y 2018
+		- cal 1 2018
+	- date
+	- uname -a
+	- clear
+	- history
+	- wc
+		- wc filepath
+	- head
+		- head filepath -- first 10 lines
+		- head -x filepath -- first x lines
+	- tail
+		- tail filepath -- last 10 lines
+		- tail -x filepath -- last x lines
+		- tail -n +x filepath -- line x to the end of file
++ Linux Advanced Commands:
+	- ifconfig
+		- network config of the computer -- ip addr for LAN or WLAN.
+	- ping ip-addr
+	- grep -- GNU Regular Expression Parser -- To search pattern/word in file(s).
+		- cat > food.txt
+		- grep "good" food.txt
+		- grep "is" food.txt
+		- grep "^is" food.txt
+		- grep "is$" food.txt
+		- grep "^is$" food.txt
+		
+		- cat > bg.txt
+		- grep "b[a-z]g" bg.txt
+		- grep "b[a-zA-Z]g" bg.txtr
+		- grep "b[^a-z]g" bg.txt
+		- grep "b[aiu]g" bg.txt
+		- grep "b\*g" bg.txt --> nullify special meaning of * using \.
+		- fgrep "b*g" bg.txt --> fixed word search - grep - no pattern.
+		- grep -F "b*g" bg.txt --> same as fgrep.
+		- grep "b.g" bg.txt --> . is any one char.
+
+		- cat > repeat.txt
+		- grep "w...w" repeat.txt
+		- grep "wo*w" repeat.txt --> * 0 or more occurances of prev char.
+		- extended wild card chars: "egrep" OR "grep -E"
+		- egrep "wo?w" repeat.txt --> ? 0 or 1 occurance of prev char.
+		- egrep "wo+w" repeat.txt --> + 1 or more occurances of prev char.
+		- egrep "wo{n}w" repeat.txt --> n occurances of prev char.
+		- egrep "wo{m,}w" repeat.txt --> m or more occurances of prev char
+		- egrep "wo{,n}w" repeat.txt --> n or less occurances of prev char
+		- egrep "wo{m,n}w" repeat.txt --> m to n occurances of prev char
+
+		- egrep "(cal|ls|mv)" day1.txt
+
+		- cat > contacts.txt
+		- egrep "^[0-9]{10}$" contacts.txt
+
+		- egrep -R "cake" dirpath
+		- Options:
+			-c
+			-n
+			-i
+
++ Linux redirection operators:
+	- input redirection:
+		command < file_path
+			- wc < food.txt
+	- output redirection:
+		command > file_path
+			- who > out.txt
+	- error redirection:
+		command 2> file_path
+			- who -x 2> err.txt
+	- append operator:
+		command >> file_path
+			- append output to the given file.
+	- example:
+		wc < food.txt > out.txt 2> err.txt
+
++ Linux Pipe:
+	- command1 | command2
+		- output of "command1" is given to "command2".
+		- who | wc	
+		- head -17 numbers.txt | tail -n +12
+		- cat numbers.txt | head -17 | tail -n +12 | rev
+
+
+
