@@ -1,0 +1,126 @@
+Linux Commands Assignments - I
+1. List the directory contents date wise sorted. ( man ls)
+==>     ls -s -lt
+
+2. List the directory contents size wise sorted.(man ls)
+==>   ls -S -s
+3. List directory contents along with their inode no. (manls)
+==> ls -i
+4. List the contents of sub directory.
+==> ls -R
+5. Create a file , write your surname and name in it and save.
+i.now open the same file and add your address in it and
+save.
+ii.reopen the same file and check your name and address in
+it.
+==>
+  -vim info.txt (addd my name and surname)
+  -vim info.txt (added my addres)
+  -cat info.txt
+
+6. how to change the time stamp of file (man touch)
+  ==>   touch  info.txt
+7. Create directory
+
+-> mkdir one
+-> cd one
+-> touch 1.txt
+-> mkdir two
+-> cd two
+-> touch 2.txt
+-> mkdir three
+-> cd three
+-> touch 3.txt
+-> mkdir four
+-> cd four
+-> touch 4.txt
+-> mkdir five
+-> cd five
+-> touch 5.txt
+-> cd ~ (i.e.
+structure : Give following commands ,
+11.txt 111.txt
+22.txt 222.txt
+33.txt 333.txt
+44.txt 444.txt
+55.txt 555.txt
+go to your home directory)
+
+8. Considering above directory structure , Do following
+operations :
+****************************************************************
+i. list the directory contents of directory named
+"five" from current directory (i.e. home directory).
+==> ls ~/one/two/three/four/five
+ii. write your name in a file named "4.txt" of
+directory "four" from current directory.
+==>vim ~/one/two/three/four/4.txt
+iii.remove the file named "555.txt" from directory
+"five" from current directory.
+==>rm ~/one/two/three/four/five/555.txt
+iv. change directory to five
+one/two/three/four/five/ ).
+( i.e. cd)
+==> cd ~/one/two/three/four/five/
+v. write your course name in file named "3.txt" which
+resides in directory "three" from current directory (i.e.
+five).also read the same file.
+==> -vim ../../3.txt
+    -cat ../../3.txt
+
+vi. list the contents of directory "two" from current
+directory (i.e. five).
+==> ls ../../../
+vii. remove file named "222.txt" which belongs to
+directory "two" from current directory (i.e. five)
+==> -cd ../../../
+    -rm ../../../222.txt
+
+viii. now change the directory to "one"
+==> cd ../../../../
+ix. remove all files only from directory named "five"
+  from current directory (i.e. one)
+==> -rm two/three/four/five/55.txt
+    -rm two/three/four/five/5.txt
+
+x. remove directory named "five" from current directory
+(i.e. one)
+from current directory (i.e. one)
+==> rmdir two/three/four/five
+xi. remove whole directory named "four" from current
+directory (i.e. one)
+==> rm -r two/three/four
+xii. change to your home directory.
+==> cd ~
+*********************************************************************
+9. change the time stamp of file named "3.txt" which resides
+in directory named "three".(man touch)
+==> touch ~/one/two/three/3.txt
+*********************************************************************
+10. Create a file named "data.txt" and write following 6
+lines in it(write as it is).
+"Linux is open source.
+In linux everything
+is file. files have permissions.
+files have inode no.
+files have size.
+there are several types of file"
+
+i. count the no. of words ,characters and lines from above
+2file.(man wc)
+==> wc info.txt
+ii. list the lines having word "files" (man grep)
+==> grep -n "files" data.txt
+iii. list the lines having word "file" (man grep)
+==> grep -n "file" data.txt
+iv.list the lines which don't have word "files" (man grep)
+==> 
+v. list the lines having word "have" along with count. (man
+grep)
+vi. list the lines starts with letter "f" (man grep)
+vii. list the lines ends with "g" (man grep)
+viii. list only first two lines.(man head)
+ix. list only last three lines.(man tail)
+x. list line no.3,4 and 5 . (man head and tail)
+3
+***********************************************************************
