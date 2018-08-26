@@ -10,11 +10,19 @@ c. 1639
 #include<stdio.h>
 void main()
 {
-  int x,c;
+  int x,x1,x2,face,rem,rev;
   printf("enter the 4digit number\n");
   scanf("%d",&x);
-  while(c<=0)
+  x1=x2=x;
+
+// reverse the number
+
+  while(x2!=0)
   {
-    
+    rem=x2%10;
+    rev=rev*10+rem;
+    x2=x2/10;
   }
+  printf("%d",rev);
+
 }
