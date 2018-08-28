@@ -1,33 +1,20 @@
-
-int fun(int a[],int n)
-{
-  int x;
-
-  if(n == 1)
-
-    return a[0];
-
-  else
-
-    x = fun(a, n-1);
-
-  if(x > a[n-1])
-
-    return x;
-
-  else
-
-    return a[n-1];
-
-}
+#include <stdio.h>
+#include<strings.h>
 
 int main()
 {
+    char food[30];
+    printf("enter somthing delicious\n");
+    scanf("%s",food);
 
-  int arr[] = {12, 10, 30, 50, 100};
+    if(strcmp(food,"cheese") == 0)
+    {
+        printf("I like cheese too :)");
+    }
+    else
+    {
+        printf("I like cheese more.");
+    }
 
-  printf(" %d ", fun(arr, 5));
-
-  getchar();
-  return 0;
+    return 0;
 }
