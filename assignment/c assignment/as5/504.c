@@ -21,9 +21,8 @@ void main()
   max=MaxArray(mat1,s);
   printf("\n maximum number in array is ::%d",max);
   //PrintArray(mat1,s);
-
-
 }
+
 int ReadArray(int *a,int s)
 {
   int i;
