@@ -1,8 +1,6 @@
 // structureadstruct basics with function
 #include<stdio.h>
-
-
- struct food
+struct food
 {
 int price;
 char name[30];
@@ -10,6 +8,7 @@ float rating;
 };
 void readstruct(struct food *f1);
 void displaystruct(struct food *f1);
+
 // *******************************88
 void main()
  {
