@@ -4,12 +4,12 @@ using namespace std;
 class base
 {
 	public:
-		 void print()
+	virtual void print()
 		{
 			cout<<" print base class"<<endl;
 		}
 
-		 void show()
+		virtual void show()
 		{
 			cout<<"show base class"<<endl;
 		}
@@ -25,7 +25,7 @@ class der: public base
 		}
 
 		void show()
-		
+
 		{
 			cout<<" show  derive class"<<endl;
 		}
@@ -42,18 +42,13 @@ int main()
 	bptr->print();
 
 	bptr->show();
-/*
 
+/*
 	der *dptr;
 	base b;
-
 	dptr=&b;
-
 	dptr->print();
 	dptr->show();
 */
 
-
 }
-
-	
