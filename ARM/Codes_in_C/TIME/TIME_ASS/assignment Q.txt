@@ -1,0 +1,5 @@
+Q1) when reset
+after 3 sec display one on LCD line 1
+after 5 sec display Two on LCD line 2
+after 9 sec glow led
+after 11 sec off led
