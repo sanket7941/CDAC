@@ -3,6 +3,7 @@
 
 int main()
 {
+	SystemInit();
 
 	while(1)
 	{

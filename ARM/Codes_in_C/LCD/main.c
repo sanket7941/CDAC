@@ -6,13 +6,15 @@ int main()
 {
 	SystemInit();
 	LCDInit();
-	int x[5]={0xBB,0xFB,0x9B,0x0B,0x4C};//サンケート
+	int x[5]={187,221,185,176,196};//サンケート sanket
+	int y[5]={};//おしん
+
 	int i;
 
 	// enterdata(0x80,"");
-	enterdata(0xc0,"Great");
+	enterdata(0xc0,"Sanket");
 	SendData(cmd,line1);
-	for ( i = 0; i < 6; i++)
+	for ( i = 0; i < 5; i++)
 	 {
 			SendData(data,x[i]);
 	}

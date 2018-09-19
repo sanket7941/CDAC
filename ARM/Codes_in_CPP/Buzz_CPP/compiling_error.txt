@@ -1,0 +1,7 @@
+/home/sunbeam/D_day/ARM/Demos/04_lcd_cpp/system_LPC17xx.h:31:8: error: ‘uint32_t’ does not name a type
+ extern uint32_t SystemCoreClock;     /*!< System Clock Frequency (Core Clock)  */
+        ^
+/home/sunbeam/D_day/ARM/Demos/04_lcd_cpp/system_LPC17xx.h:56:22: error: variable or field ‘sw_delay’ declared void
+ extern void sw_delay(uint32_t count);
+                      ^
+/home/sunbeam/D_day/ARM/Demos/04_lcd_cpp/system_LPC17xx.h:56:22: error: ‘uint32_t’ was not declared in this scope
