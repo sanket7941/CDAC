@@ -3,12 +3,12 @@
 
 #include "LPC17xx.h"
 //structure for RTC data
-typedef struct rtc_time_t
+struct rtc
 {
   int hour,min,sec;
   int dom,mon,year;
   int dow,doy;
-}rtc_time_t;
+};
 
 #define ILR_CIF 0
 #define ILR_ALF 1
@@ -25,10 +25,23 @@ typedef struct rtc_time_t
 #define CIIR_IMMON	6
 #define CIIR_IMYEAR	7
 
+#define AMR_ALSEC   0
+#define AMR_ALMIN   1
+#define AMR_ALHOUR  2
+#define AMR_ALDOM   3
+#define AMR_ALDOW   4
+#define AMR_ALDOY   5
+#define AMR_ALMON   6
+#define AMR_ALYEAR  7
+
+
+extern volatile int ALflag;
 extern volatile int flag;
 
-void RTCinit(rtc_time_t *t);
-void rtc_get(rtc_time_t *t);
+void RTCinit(struct rtc *t);
+void RTCalarm(struct rtc *t);
+void GETalarm(struct rtc *t);
+void rtc_get(struct rtc *t);
 void RTC_IRQHandler(void);
 
 #endif

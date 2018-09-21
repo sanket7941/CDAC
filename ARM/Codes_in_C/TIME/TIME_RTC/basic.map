@@ -109,6 +109,9 @@ Discarded input sections
  .text          0x00000000        0x0 rtc.o
  .data          0x00000000        0x0 rtc.o
  .bss           0x00000000        0x0 rtc.o
+ .text          0x00000000        0x0 buzz.o
+ .data          0x00000000        0x0 buzz.o
+ .bss           0x00000000        0x0 buzz.o
  .text          0x00000000        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
  .data          0x00000000        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
  .bss           0x00000000        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
@@ -299,6 +302,7 @@ LOAD startup_LPC17xx.o
 LOAD system_LPC17xx.o
 LOAD lcd.o
 LOAD rtc.o
+LOAD buzz.o
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libstdc++.a
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libsupc++.a
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libm.a
@@ -318,234 +322,247 @@ END GROUP
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
 
-.text           0x00002000     0x5430
+.text           0x00002000     0x5580
  *(.isr_vector)
  .isr_vector    0x00002000       0xc4 startup_LPC17xx.o
                 0x00002000                g_pfnVectors
  *(.text*)
  .text          0x000020c4       0x5c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
- .text.main     0x00002120       0xc8 main.o
+ .text.main     0x00002120      0x100 main.o
                 0x00002120                main
  .text.Reset_Handler
-                0x000021e8       0x70 startup_LPC17xx.o
-                0x000021e8                Reset_Handler
+                0x00002220       0x70 startup_LPC17xx.o
+                0x00002220                Reset_Handler
  .text.Default_Handler
-                0x00002258        0x8 startup_LPC17xx.o
-                0x00002258                TIMER2_IRQHandler
-                0x00002258                DebugMon_Handler
-                0x00002258                RIT_IRQHandler
-                0x00002258                I2C0_IRQHandler
-                0x00002258                SysTick_Handler
-                0x00002258                PWM1_IRQHandler
-                0x00002258                PendSV_Handler
-                0x00002258                I2C1_IRQHandler
-                0x00002258                EINT2_IRQHandler
-                0x00002258                UART1_IRQHandler
-                0x00002258                EINT3_IRQHandler
-                0x00002258                TIMER3_IRQHandler
-                0x00002258                UART0_IRQHandler
-                0x00002258                UsageFault_Handler
-                0x00002258                PLL0_IRQHandler
-                0x00002258                CAN_IRQHandler
-                0x00002258                PLL1_IRQHandler
-                0x00002258                SSP0_IRQHandler
-                0x00002258                I2S_IRQHandler
-                0x00002258                I2C2_IRQHandler
-                0x00002258                TIMER0_IRQHandler
-                0x00002258                SPI_IRQHandler
-                0x00002258                EINT1_IRQHandler
-                0x00002258                TIMER1_IRQHandler
-                0x00002258                UART2_IRQHandler
-                0x00002258                Default_Handler
-                0x00002258                ADC_IRQHandler
-                0x00002258                SSP1_IRQHandler
-                0x00002258                USB_IRQHandler
-                0x00002258                BOD_IRQHandler
-                0x00002258                MemManage_Handler
-                0x00002258                WDT_IRQHandler
-                0x00002258                SVC_Handler
-                0x00002258                QEI_IRQHandler
-                0x00002258                EINT0_IRQHandler
-                0x00002258                DMA_IRQHandler
-                0x00002258                BusFault_Handler
-                0x00002258                UART3_IRQHandler
-                0x00002258                MCPWM_IRQHandler
-                0x00002258                ENET_IRQHandler
+                0x00002290        0x8 startup_LPC17xx.o
+                0x00002290                TIMER2_IRQHandler
+                0x00002290                DebugMon_Handler
+                0x00002290                RIT_IRQHandler
+                0x00002290                I2C0_IRQHandler
+                0x00002290                SysTick_Handler
+                0x00002290                PWM1_IRQHandler
+                0x00002290                PendSV_Handler
+                0x00002290                I2C1_IRQHandler
+                0x00002290                EINT2_IRQHandler
+                0x00002290                UART1_IRQHandler
+                0x00002290                EINT3_IRQHandler
+                0x00002290                TIMER3_IRQHandler
+                0x00002290                UART0_IRQHandler
+                0x00002290                UsageFault_Handler
+                0x00002290                PLL0_IRQHandler
+                0x00002290                CAN_IRQHandler
+                0x00002290                PLL1_IRQHandler
+                0x00002290                SSP0_IRQHandler
+                0x00002290                I2S_IRQHandler
+                0x00002290                I2C2_IRQHandler
+                0x00002290                TIMER0_IRQHandler
+                0x00002290                SPI_IRQHandler
+                0x00002290                EINT1_IRQHandler
+                0x00002290                TIMER1_IRQHandler
+                0x00002290                UART2_IRQHandler
+                0x00002290                Default_Handler
+                0x00002290                ADC_IRQHandler
+                0x00002290                SSP1_IRQHandler
+                0x00002290                USB_IRQHandler
+                0x00002290                BOD_IRQHandler
+                0x00002290                MemManage_Handler
+                0x00002290                WDT_IRQHandler
+                0x00002290                SVC_Handler
+                0x00002290                QEI_IRQHandler
+                0x00002290                EINT0_IRQHandler
+                0x00002290                DMA_IRQHandler
+                0x00002290                BusFault_Handler
+                0x00002290                UART3_IRQHandler
+                0x00002290                MCPWM_IRQHandler
+                0x00002290                ENET_IRQHandler
  .text.SystemInit
-                0x00002260      0x13c system_LPC17xx.o
-                0x00002260                SystemInit
+                0x00002298      0x13c system_LPC17xx.o
+                0x00002298                SystemInit
  .text.sw_delay
-                0x0000239c       0x40 system_LPC17xx.o
-                0x0000239c                sw_delay
- .text.LCDInit  0x000023dc       0x58 lcd.o
-                0x000023dc                LCDInit
- .text.busy     0x00002434       0x58 lcd.o
-                0x00002434                busy
+                0x000023d4       0x40 system_LPC17xx.o
+                0x000023d4                sw_delay
+ .text.LCDInit  0x00002414       0x58 lcd.o
+                0x00002414                LCDInit
+ .text.busy     0x0000246c       0x58 lcd.o
+                0x0000246c                busy
  .text.SendData
-                0x0000248c       0x48 lcd.o
-                0x0000248c                SendData
+                0x000024c4       0x48 lcd.o
+                0x000024c4                SendData
  .text.sendnibble
-                0x000024d4       0x74 lcd.o
-                0x000024d4                sendnibble
+                0x0000250c       0x74 lcd.o
+                0x0000250c                sendnibble
  .text.enterdata
-                0x00002548       0x48 lcd.o
-                0x00002548                enterdata
+                0x00002580       0x48 lcd.o
+                0x00002580                enterdata
  .text.NVIC_EnableIRQ
-                0x00002590       0x30 rtc.o
- .text.RTCinit  0x000025c0       0x88 rtc.o
-                0x000025c0                RTCinit
- .text.rtc_get  0x00002648       0x84 rtc.o
-                0x00002648                rtc_get
+                0x000025c8       0x30 rtc.o
+ .text.RTCinit  0x000025f8       0x88 rtc.o
+                0x000025f8                RTCinit
+ .text.rtc_get  0x00002680       0x84 rtc.o
+                0x00002680                rtc_get
+ .text.RTCalarm
+                0x00002704       0x6c rtc.o
+                0x00002704                RTCalarm
  .text.RTC_IRQHandler
-                0x000026cc       0x38 rtc.o
-                0x000026cc                RTC_IRQHandler
- .text.memset   0x00002704       0x9c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
-                0x00002704                memset
- .text.sprintf  0x000027a0       0x4c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sprintf.o)
-                0x000027a0                sprintf
+                0x00002770       0x60 rtc.o
+                0x00002770                RTC_IRQHandler
+ .text.BuzzInit
+                0x000027d0       0x1c buzz.o
+                0x000027d0                BuzzInit
+ .text.BuzzOn   0x000027ec       0x18 buzz.o
+                0x000027ec                BuzzOn
+ .text.BuzzOff  0x00002804       0x1c buzz.o
+                0x00002804                BuzzOff
+ .text.BuzzNote1
+                0x00002820       0x24 buzz.o
+                0x00002820                BuzzNote1
+ .text.memset   0x00002844       0x9c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+                0x00002844                memset
+ .text.sprintf  0x000028e0       0x4c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sprintf.o)
+                0x000028e0                sprintf
  .text._svfprintf_r
-                0x000027ec     0x175c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
-                0x000027ec                _svfprintf_r
+                0x0000292c     0x175c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
+                0x0000292c                _svfprintf_r
  .text.startup.register_fini
-                0x00003f48       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x00003f5c        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
-                0x00003f5c                atexit
- .text.quorem   0x00003f68      0x12c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
- *fill*         0x00004094        0x4 
- .text._dtoa_r  0x00004098      0xe4c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
-                0x00004098                _dtoa_r
+                0x00004088       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x0000409c        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                0x0000409c                atexit
+ .text.quorem   0x000040a8      0x12c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
+ *fill*         0x000041d4        0x4 
+ .text._dtoa_r  0x000041d8      0xe4c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
+                0x000041d8                _dtoa_r
  .text.__libc_fini_array
-                0x00004ee4       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
-                0x00004ee4                __libc_fini_array
+                0x00005024       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                0x00005024                __libc_fini_array
  .text._localeconv_r
-                0x00004f0c        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-locale.o)
-                0x00004f0c                _localeconv_r
+                0x0000504c        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-locale.o)
+                0x0000504c                _localeconv_r
  .text._malloc_r
-                0x00004f14      0x558 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
-                0x00004f14                _malloc_r
- .text.memchr   0x0000546c       0x8c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
-                0x0000546c                memchr
- .text          0x000054f8       0xec /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
-                0x000054f8                memcpy
+                0x00005054      0x558 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x00005054                _malloc_r
+ .text.memchr   0x000055ac       0x8c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+                0x000055ac                memchr
+ .text          0x00005638       0xec /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
+                0x00005638                memcpy
  .text.__malloc_lock
-                0x000055e4        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
-                0x000055e4                __malloc_lock
+                0x00005724        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+                0x00005724                __malloc_lock
  .text.__malloc_unlock
-                0x000055e8        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
-                0x000055e8                __malloc_unlock
- .text._Balloc  0x000055ec       0x50 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x000055ec                _Balloc
- .text._Bfree   0x0000563c       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x0000563c                _Bfree
+                0x00005728        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+                0x00005728                __malloc_unlock
+ .text._Balloc  0x0000572c       0x50 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x0000572c                _Balloc
+ .text._Bfree   0x0000577c       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x0000577c                _Bfree
  .text.__multadd
-                0x00005650       0x80 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x00005650                __multadd
+                0x00005790       0x80 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00005790                __multadd
  .text.__hi0bits
-                0x000056d0       0x40 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x000056d0                __hi0bits
+                0x00005810       0x40 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00005810                __hi0bits
  .text.__lo0bits
-                0x00005710       0x5c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x00005710                __lo0bits
- .text.__i2b    0x0000576c       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x0000576c                __i2b
+                0x00005850       0x5c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00005850                __lo0bits
+ .text.__i2b    0x000058ac       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x000058ac                __i2b
  .text.__multiply
-                0x00005780      0x13c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x00005780                __multiply
+                0x000058c0      0x13c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x000058c0                __multiply
  .text.__pow5mult
-                0x000058bc       0xa0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x000058bc                __pow5mult
+                0x000059fc       0xa0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x000059fc                __pow5mult
  .text.__lshift
-                0x0000595c       0xac /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x0000595c                __lshift
- .text.__mcmp   0x00005a08       0x40 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x00005a08                __mcmp
- .text.__mdiff  0x00005a48      0x128 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x00005a48                __mdiff
- .text.__d2b    0x00005b70       0xa8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x00005b70                __d2b
- .text._sbrk_r  0x00005c18       0x24 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
-                0x00005c18                _sbrk_r
- .text.strlen   0x00005c3c       0x5c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen-stub.o)
-                0x00005c3c                strlen
+                0x00005a9c       0xac /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00005a9c                __lshift
+ .text.__mcmp   0x00005b48       0x40 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00005b48                __mcmp
+ .text.__mdiff  0x00005b88      0x128 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00005b88                __mdiff
+ .text.__d2b    0x00005cb0       0xa8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00005cb0                __d2b
+ .text._sbrk_r  0x00005d58       0x24 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+                0x00005d58                _sbrk_r
+ .text.strlen   0x00005d7c       0x5c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen-stub.o)
+                0x00005d7c                strlen
  .text.__ssprint_r
-                0x00005c98      0x100 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfiprintf.o)
-                0x00005c98                __ssprint_r
+                0x00005dd8      0x100 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfiprintf.o)
+                0x00005dd8                __ssprint_r
  .text.__register_exitproc
-                0x00005d98       0xa4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
-                0x00005d98                __register_exitproc
+                0x00005ed8       0xa4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                0x00005ed8                __register_exitproc
  .text._calloc_r
-                0x00005e3c       0x60 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-callocr.o)
-                0x00005e3c                _calloc_r
+                0x00005f7c       0x60 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-callocr.o)
+                0x00005f7c                _calloc_r
  .text._malloc_trim_r
-                0x00005e9c       0x9c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
-                0x00005e9c                _malloc_trim_r
- .text._free_r  0x00005f38      0x1d0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
-                0x00005f38                _free_r
- .text.memmove  0x00006108       0xc8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
-                0x00006108                memmove
+                0x00005fdc       0x9c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+                0x00005fdc                _malloc_trim_r
+ .text._free_r  0x00006078      0x1d0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+                0x00006078                _free_r
+ .text.memmove  0x00006248       0xc8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+                0x00006248                memmove
  .text._realloc_r
-                0x000061d0      0x3d4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
-                0x000061d0                _realloc_r
- .text._sbrk    0x000065a4       0x1c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libnosys.a(sbrk.o)
-                0x000065a4                _sbrk
- .text          0x000065c0      0x370 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_addsubdf3.o)
-                0x000065c0                __aeabi_drsub
-                0x000065c8                __aeabi_dsub
-                0x000065c8                __subdf3
-                0x000065cc                __adddf3
-                0x000065cc                __aeabi_dadd
-                0x00006844                __aeabi_ui2d
-                0x00006844                __floatunsidf
-                0x00006864                __floatsidf
-                0x00006864                __aeabi_i2d
-                0x00006888                __extendsfdf2
-                0x00006888                __aeabi_f2d
-                0x000068c4                __aeabi_ul2d
-                0x000068c4                __floatundidf
-                0x000068d4                __floatdidf
-                0x000068d4                __aeabi_l2d
- .text          0x00006930      0x424 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_muldivdf3.o)
-                0x00006930                __aeabi_dmul
-                0x00006930                __muldf3
-                0x00006b84                __aeabi_ddiv
-                0x00006b84                __divdf3
- .text          0x00006d54      0x110 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_cmpdf2.o)
-                0x00006d54                __gtdf2
-                0x00006d54                __gedf2
-                0x00006d5c                __ltdf2
-                0x00006d5c                __ledf2
-                0x00006d64                __cmpdf2
-                0x00006d64                __eqdf2
-                0x00006d64                __nedf2
-                0x00006de0                __aeabi_cdrcmple
-                0x00006df0                __aeabi_cdcmple
-                0x00006df0                __aeabi_cdcmpeq
-                0x00006e00                __aeabi_dcmpeq
-                0x00006e14                __aeabi_dcmplt
-                0x00006e28                __aeabi_dcmple
-                0x00006e3c                __aeabi_dcmpge
-                0x00006e50                __aeabi_dcmpgt
- .text          0x00006e64       0x2c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_unorddf2.o)
-                0x00006e64                __aeabi_dcmpun
-                0x00006e64                __unorddf2
- .text          0x00006e90       0x50 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_fixdfsi.o)
-                0x00006e90                __fixdfsi
-                0x00006e90                __aeabi_d2iz
- .text          0x00006ee0       0x30 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_aeabi_uldivmod.o)
-                0x00006ee0                __aeabi_uldivmod
- .text          0x00006f10      0x2ec /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_udivmoddi4.o)
-                0x00006f10                __udivmoddi4
- .text          0x000071fc        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_dvmd_tls.o)
-                0x000071fc                __aeabi_ldiv0
-                0x000071fc                __aeabi_idiv0
+                0x00006310      0x3d4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+                0x00006310                _realloc_r
+ .text._sbrk    0x000066e4       0x1c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libnosys.a(sbrk.o)
+                0x000066e4                _sbrk
+ .text          0x00006700      0x370 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_addsubdf3.o)
+                0x00006700                __aeabi_drsub
+                0x00006708                __aeabi_dsub
+                0x00006708                __subdf3
+                0x0000670c                __adddf3
+                0x0000670c                __aeabi_dadd
+                0x00006984                __aeabi_ui2d
+                0x00006984                __floatunsidf
+                0x000069a4                __floatsidf
+                0x000069a4                __aeabi_i2d
+                0x000069c8                __extendsfdf2
+                0x000069c8                __aeabi_f2d
+                0x00006a04                __aeabi_ul2d
+                0x00006a04                __floatundidf
+                0x00006a14                __floatdidf
+                0x00006a14                __aeabi_l2d
+ .text          0x00006a70      0x424 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_muldivdf3.o)
+                0x00006a70                __aeabi_dmul
+                0x00006a70                __muldf3
+                0x00006cc4                __aeabi_ddiv
+                0x00006cc4                __divdf3
+ .text          0x00006e94      0x110 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_cmpdf2.o)
+                0x00006e94                __gtdf2
+                0x00006e94                __gedf2
+                0x00006e9c                __ltdf2
+                0x00006e9c                __ledf2
+                0x00006ea4                __cmpdf2
+                0x00006ea4                __eqdf2
+                0x00006ea4                __nedf2
+                0x00006f20                __aeabi_cdrcmple
+                0x00006f30                __aeabi_cdcmple
+                0x00006f30                __aeabi_cdcmpeq
+                0x00006f40                __aeabi_dcmpeq
+                0x00006f54                __aeabi_dcmplt
+                0x00006f68                __aeabi_dcmple
+                0x00006f7c                __aeabi_dcmpge
+                0x00006f90                __aeabi_dcmpgt
+ .text          0x00006fa4       0x2c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_unorddf2.o)
+                0x00006fa4                __aeabi_dcmpun
+                0x00006fa4                __unorddf2
+ .text          0x00006fd0       0x50 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_fixdfsi.o)
+                0x00006fd0                __fixdfsi
+                0x00006fd0                __aeabi_d2iz
+ .text          0x00007020       0x30 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_aeabi_uldivmod.o)
+                0x00007020                __aeabi_uldivmod
+ .text          0x00007050      0x2ec /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_udivmoddi4.o)
+                0x00007050                __udivmoddi4
+ .text          0x0000733c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_dvmd_tls.o)
+                0x0000733c                __aeabi_ldiv0
+                0x0000733c                __aeabi_idiv0
  *(.init)
- .init          0x00007200        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
-                0x00007200                _init
- .init          0x00007204        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+ .init          0x00007340        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
+                0x00007340                _init
+ .init          0x00007344        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
  *(.fini)
- .fini          0x0000720c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
-                0x0000720c                _fini
- .fini          0x00007210        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+ .fini          0x0000734c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
+                0x0000734c                _fini
+ .fini          0x00007350        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
  *crtbegin.o(.ctors)
  *crtbegin?.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
@@ -557,69 +574,69 @@ LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm
  *(SORT(.dtors.*))
  *(.dtors)
  *(.rodata*)
- .rodata        0x00007218       0x8c main.o
+ .rodata        0x00007358       0x9c main.o
  .rodata.str1.4
-                0x000072a4        0x2 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
- *fill*         0x000072a6        0x2 
+                0x000073f4        0x2 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ *fill*         0x000073f6        0x2 
  .rodata._global_impure_ptr
-                0x000072a8        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
-                0x000072a8                _global_impure_ptr
+                0x000073f8        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x000073f8                _global_impure_ptr
  .rodata.blanks.7055
-                0x000072ac       0x10 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
+                0x000073fc       0x10 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
  .rodata.str1.4
-                0x000072bc       0x42 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
- *fill*         0x000072fe        0x2 
+                0x0000740c       0x42 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
+ *fill*         0x0000744e        0x2 
  .rodata.zeroes.7056
-                0x00007300       0x10 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
+                0x00007450       0x10 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
  .rodata.str1.4
-                0x00007310       0x10 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
+                0x00007460       0x10 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
                                  0x12 (size before relaxing)
  .rodata.str1.4
-                0x00007320        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-locale.o)
+                0x00007470        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-locale.o)
                                  0x12 (size before relaxing)
- *fill*         0x0000732c        0x4 
+ *fill*         0x0000747c        0x4 
  .rodata.__mprec_tens
-                0x00007330       0xc8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x00007330                __mprec_tens
+                0x00007480       0xc8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00007480                __mprec_tens
  .rodata.__mprec_bigtens
-                0x000073f8       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
-                0x000073f8                __mprec_bigtens
+                0x00007548       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00007548                __mprec_bigtens
  .rodata.p05.5396
-                0x00007420        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00007570        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
  *(.eh_frame*)
- .eh_frame      0x0000742c        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
- .eh_frame      0x0000742c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
+ .eh_frame      0x0000757c        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+ .eh_frame      0x0000757c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
 
-.glue_7         0x00007430        0x0
- .glue_7        0x00007430        0x0 linker stubs
+.glue_7         0x00007580        0x0
+ .glue_7        0x00007580        0x0 linker stubs
 
-.glue_7t        0x00007430        0x0
- .glue_7t       0x00007430        0x0 linker stubs
+.glue_7t        0x00007580        0x0
+ .glue_7t       0x00007580        0x0 linker stubs
 
-.vfp11_veneer   0x00007430        0x0
- .vfp11_veneer  0x00007430        0x0 linker stubs
+.vfp11_veneer   0x00007580        0x0
+ .vfp11_veneer  0x00007580        0x0 linker stubs
 
-.v4_bx          0x00007430        0x0
- .v4_bx         0x00007430        0x0 linker stubs
+.v4_bx          0x00007580        0x0
+ .v4_bx         0x00007580        0x0 linker stubs
 
-.iplt           0x00007430        0x0
- .iplt          0x00007430        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.iplt           0x00007580        0x0
+ .iplt          0x00007580        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00007430                __exidx_start = .
+                0x00007580                __exidx_start = .
 
-.ARM.exidx      0x00007430        0x8
+.ARM.exidx      0x00007580        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x00007430        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_udivmoddi4.o)
-                0x00007438                __exidx_end = .
-                0x00007438                __etext = .
-                0x00007438                __sidata = __etext
+ .ARM.exidx     0x00007580        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_udivmoddi4.o)
+                0x00007588                __exidx_end = .
+                0x00007588                __etext = .
+                0x00007588                __sidata = __etext
 
-.rel.dyn        0x00007438        0x0
- .rel.iplt      0x00007438        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.rel.dyn        0x00007588        0x0
+ .rel.iplt      0x00007588        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.data           0x100000c8      0x880 load address 0x00007438
+.data           0x100000c8      0x880 load address 0x00007588
                 0x100000c8                __data_start__ = .
  *(vtable)
  *(.data*)
@@ -659,48 +676,50 @@ LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm
                 0x10000948                . = ALIGN (0x4)
                 0x10000948                __data_end__ = .
 
-.jcr            0x10000948        0x0 load address 0x00007cb8
+.jcr            0x10000948        0x0 load address 0x00007e08
  .jcr           0x10000948        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.igot.plt       0x10000948        0x0 load address 0x00007cb8
+.igot.plt       0x10000948        0x0 load address 0x00007e08
  .igot.plt      0x10000948        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.stackarea      0x10000948      0x800 load address 0x00007cb8
+.stackarea      0x10000948      0x800 load address 0x00007e08
  .stackarea     0x10000948      0x800 startup_LPC17xx.o
                 0x10000948                pulStack
 
-.bss            0x10001148       0x5c load address 0x000084b8
+.bss            0x10001148       0x60 load address 0x00008608
                 0x10001148                __bss_start__ = .
  *(.bss*)
  .bss           0x10001148       0x1c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
  .bss.flag      0x10001164        0x4 rtc.o
                 0x10001164                flag
+ .bss.ALflag    0x10001168        0x4 rtc.o
+                0x10001168                ALflag
  .bss.__malloc_max_total_mem
-                0x10001168        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
-                0x10001168                __malloc_max_total_mem
- .bss.__malloc_max_sbrked_mem
                 0x1000116c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
-                0x1000116c                __malloc_max_sbrked_mem
- .bss.__malloc_top_pad
+                0x1000116c                __malloc_max_total_mem
+ .bss.__malloc_max_sbrked_mem
                 0x10001170        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
-                0x10001170                __malloc_top_pad
+                0x10001170                __malloc_max_sbrked_mem
+ .bss.__malloc_top_pad
+                0x10001174        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x10001174                __malloc_top_pad
  .bss.__malloc_current_mallinfo
-                0x10001174       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
-                0x10001174                __malloc_current_mallinfo
+                0x10001178       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x10001178                __malloc_current_mallinfo
  .bss.heap_end.4167
-                0x1000119c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libnosys.a(sbrk.o)
+                0x100011a0        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libnosys.a(sbrk.o)
  *(COMMON)
- COMMON         0x100011a0        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
-                0x100011a0                errno
-                0x100011a4                __bss_end__ = .
+ COMMON         0x100011a4        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+                0x100011a4                errno
+                0x100011a8                __bss_end__ = .
 
-.heap           0x100011a4        0x0
-                0x100011a4                __end__ = .
-                0x100011a4                end = __end__
+.heap           0x100011a8        0x0
+                0x100011a8                __end__ = .
+                0x100011a8                end = __end__
  *(.heap*)
-                0x100011a4                __HeapLimit = .
+                0x100011a8                __HeapLimit = .
 
-.stack_dummy    0x100011a4        0x0
+.stack_dummy    0x100011a8        0x0
  *(.stack)
                 0x10008000                __StackTop = (ORIGIN (RAM) + LENGTH (RAM))
                 0x10008000                __StackLimit = (__StackTop - SIZEOF (.stack_dummy))
@@ -725,73 +744,75 @@ OUTPUT(basic.elf elf32-littlearm)
  .ARM.attributes
                 0x00000116       0x33 rtc.o
  .ARM.attributes
-                0x00000149       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x00000149       0x33 buzz.o
  .ARM.attributes
-                0x00000176       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+                0x0000017c       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
  .ARM.attributes
-                0x000001a3       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sprintf.o)
+                0x000001a9       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
  .ARM.attributes
-                0x000001d0       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
+                0x000001d6       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sprintf.o)
  .ARM.attributes
-                0x000001fd       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+                0x00000203       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfprintf.o)
  .ARM.attributes
-                0x0000022a       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                0x00000230       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
  .ARM.attributes
-                0x00000257       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
+                0x0000025d       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
  .ARM.attributes
-                0x00000284       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                0x0000028a       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-dtoa.o)
  .ARM.attributes
-                0x000002b1       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-locale.o)
+                0x000002b7       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
  .ARM.attributes
-                0x000002de       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x000002e4       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-locale.o)
  .ARM.attributes
-                0x0000030b       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+                0x00000311       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
  .ARM.attributes
-                0x00000338       0x1b /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
+                0x0000033e       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
  .ARM.attributes
-                0x00000353       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+                0x0000036b       0x1b /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
  .ARM.attributes
-                0x00000380       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
+                0x00000386       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
  .ARM.attributes
-                0x000003ad       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+                0x000003b3       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-mprec.o)
  .ARM.attributes
-                0x000003da       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen-stub.o)
+                0x000003e0       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
  .ARM.attributes
-                0x00000407       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfiprintf.o)
+                0x0000040d       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen-stub.o)
  .ARM.attributes
-                0x00000434       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                0x0000043a       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-svfiprintf.o)
  .ARM.attributes
-                0x00000461       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-callocr.o)
+                0x00000467       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
  .ARM.attributes
-                0x0000048e       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+                0x00000494       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-callocr.o)
  .ARM.attributes
-                0x000004bb       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+                0x000004c1       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
  .ARM.attributes
-                0x000004e8       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+                0x000004ee       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
  .ARM.attributes
-                0x00000515       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+                0x0000051b       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
  .ARM.attributes
-                0x00000542       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libnosys.a(sbrk.o)
+                0x00000548       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
  .ARM.attributes
-                0x0000056f       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_addsubdf3.o)
+                0x00000575       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libnosys.a(sbrk.o)
  .ARM.attributes
-                0x0000058c       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_muldivdf3.o)
+                0x000005a2       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_addsubdf3.o)
  .ARM.attributes
-                0x000005a9       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_cmpdf2.o)
+                0x000005bf       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_muldivdf3.o)
  .ARM.attributes
-                0x000005c6       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_unorddf2.o)
+                0x000005dc       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_cmpdf2.o)
  .ARM.attributes
-                0x000005e3       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_fixdfsi.o)
+                0x000005f9       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_unorddf2.o)
  .ARM.attributes
-                0x00000600       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_aeabi_uldivmod.o)
+                0x00000616       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_arm_fixdfsi.o)
  .ARM.attributes
-                0x0000061d       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_udivmoddi4.o)
+                0x00000633       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_aeabi_uldivmod.o)
  .ARM.attributes
-                0x0000064a       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_dvmd_tls.o)
+                0x00000650       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_udivmoddi4.o)
  .ARM.attributes
-                0x00000667       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
+                0x0000067d       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libgcc.a(_dvmd_tls.o)
  .ARM.attributes
-                0x00000694       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+                0x0000069a       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
+ .ARM.attributes
+                0x000006c7       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
 
 .comment        0x00000000       0x6e
  .comment       0x00000000       0x6e main.o
@@ -800,6 +821,7 @@ OUTPUT(basic.elf elf32-littlearm)
  .comment       0x0000006e       0x6f system_LPC17xx.o
  .comment       0x0000006e       0x6f lcd.o
  .comment       0x0000006e       0x6f rtc.o
+ .comment       0x0000006e       0x6f buzz.o
 
 .debug_frame    0x00000000      0x8d4
  .debug_frame   0x00000000       0x34 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)

@@ -11,7 +11,7 @@ int main()
 	while(1)
 	{
 		// UartPuts("chota chetan:\r\n");
-		UartPuts("prateek sheth:\r\n");
+		// UartPuts("prateek sheth:\r\n");
 		UartGets(str);
 		strupr(str);
 		UartPuts(str);
