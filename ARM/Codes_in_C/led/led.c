@@ -1,7 +1,7 @@
 
 #include"led.h"
 
-void init(void)
+void LEDinit(void)
 {
 	FIO1DIR |= BV(LED);//
 	LED_OFF();

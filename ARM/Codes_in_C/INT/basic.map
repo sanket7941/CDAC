@@ -164,7 +164,7 @@ END GROUP
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
 
-.text           0x00002000      0x584
+.text           0x00002000      0x598
  *(.isr_vector)
  .isr_vector    0x00002000       0xc4 startup_LPC17xx.o
                 0x00002000                g_pfnVectors
@@ -241,26 +241,26 @@ LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm
                 0x00002408       0x60 int.o
                 0x00002408                int_init
  .text.EINT2_IRQHandler
-                0x00002468        0xc int.o
+                0x00002468       0x20 int.o
                 0x00002468                EINT2_IRQHandler
  .text.startup.register_fini
-                0x00002474       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x00002488        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
-                0x00002488                atexit
+                0x00002488       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x0000249c        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                0x0000249c                atexit
  .text.__libc_fini_array
-                0x00002494       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
-                0x00002494                __libc_fini_array
+                0x000024a8       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                0x000024a8                __libc_fini_array
  .text.__register_exitproc
-                0x000024bc       0xa4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
-                0x000024bc                __register_exitproc
+                0x000024d0       0xa4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                0x000024d0                __register_exitproc
  *(.init)
- .init          0x00002560        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
-                0x00002560                _init
- .init          0x00002564        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+ .init          0x00002574        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
+                0x00002574                _init
+ .init          0x00002578        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
  *(.fini)
- .fini          0x0000256c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
-                0x0000256c                _fini
- .fini          0x00002570        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+ .fini          0x00002580        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
+                0x00002580                _fini
+ .fini          0x00002584        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
  *crtbegin.o(.ctors)
  *crtbegin?.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
@@ -273,44 +273,44 @@ LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm
  *(.dtors)
  *(.rodata*)
  .rodata.str1.4
-                0x00002578        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x0000258c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
                                   0x2 (size before relaxing)
  .rodata._global_impure_ptr
-                0x0000257c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
-                0x0000257c                _global_impure_ptr
+                0x00002590        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x00002590                _global_impure_ptr
  *(.eh_frame*)
- .eh_frame      0x00002580        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
- .eh_frame      0x00002580        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
+ .eh_frame      0x00002594        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+ .eh_frame      0x00002594        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
 
-.glue_7         0x00002584        0x0
- .glue_7        0x00002584        0x0 linker stubs
+.glue_7         0x00002598        0x0
+ .glue_7        0x00002598        0x0 linker stubs
 
-.glue_7t        0x00002584        0x0
- .glue_7t       0x00002584        0x0 linker stubs
+.glue_7t        0x00002598        0x0
+ .glue_7t       0x00002598        0x0 linker stubs
 
-.vfp11_veneer   0x00002584        0x0
- .vfp11_veneer  0x00002584        0x0 linker stubs
+.vfp11_veneer   0x00002598        0x0
+ .vfp11_veneer  0x00002598        0x0 linker stubs
 
-.v4_bx          0x00002584        0x0
- .v4_bx         0x00002584        0x0 linker stubs
+.v4_bx          0x00002598        0x0
+ .v4_bx         0x00002598        0x0 linker stubs
 
-.iplt           0x00002584        0x0
- .iplt          0x00002584        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.iplt           0x00002598        0x0
+ .iplt          0x00002598        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.rel.dyn        0x00002584        0x0
- .rel.iplt      0x00002584        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.rel.dyn        0x00002598        0x0
+ .rel.iplt      0x00002598        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00002584                __exidx_start = .
+                0x00002598                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x00002584                __exidx_end = .
-                0x00002584                __etext = .
-                0x00002584                __sidata = __etext
+                0x00002598                __exidx_end = .
+                0x00002598                __etext = .
+                0x00002598                __sidata = __etext
 
-.data           0x100000c8      0x434 load address 0x00002584
+.data           0x100000c8      0x434 load address 0x00002598
                 0x100000c8                __data_start__ = .
  *(vtable)
  *(.data*)
@@ -337,17 +337,17 @@ LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm
                 0x100004fc                . = ALIGN (0x4)
                 0x100004fc                __data_end__ = .
 
-.jcr            0x100004fc        0x0 load address 0x000029b8
+.jcr            0x100004fc        0x0 load address 0x000029cc
  .jcr           0x100004fc        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.igot.plt       0x100004fc        0x0 load address 0x000029b8
+.igot.plt       0x100004fc        0x0 load address 0x000029cc
  .igot.plt      0x100004fc        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.stackarea      0x100004fc      0x800 load address 0x000029b8
+.stackarea      0x100004fc      0x800 load address 0x000029cc
  .stackarea     0x100004fc      0x800 startup_LPC17xx.o
                 0x100004fc                pulStack
 
-.bss            0x10000cfc       0x1c load address 0x000031b8
+.bss            0x10000cfc       0x1c load address 0x000031cc
                 0x10000cfc                __bss_start__ = .
  *(.bss*)
  .bss           0x10000cfc       0x1c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o

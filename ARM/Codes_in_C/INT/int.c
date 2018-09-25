@@ -19,6 +19,7 @@ NVIC_EnableIRQ(EINT2_IRQn);
 }
 void EINT2_IRQHandler(void)
 {
+    // write the ISR
     HeartBeat();
     LPC_SC->EXTINT |= BV(INT2);
 }
