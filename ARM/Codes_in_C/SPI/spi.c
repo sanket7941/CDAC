@@ -1,11 +1,15 @@
+/*
+code :: header for SPI
+*/
+
 #include "spi.h"
 
 void SPIinit(void)
 {
-  // enable SCLK, MOSI, MISO using PINSEL.
+  // enable SCLK, MOSI, MISO using PINSEL 0&1.
 	LPC_PINCON->PINSEL0 |= BV(31) | BV(30);
 	LPC_PINCON->PINSEL1 |= BV(5) | BV(4) | BV(3) | BV(2);
-  //
+  
 	LPC_PINCON->PINSEL1 &= ~(BV(1) | BV(0));
 	LPC_GPIO0->FIODIR |= BV(SSEL);
 
