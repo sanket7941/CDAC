@@ -3,6 +3,11 @@
 int main()
 {
 	SystemInit();
-	while(1);
+	while(ALIVE)
+	{
+	EAT();
+	SLEEP();
+	code();
+	repeat();	
+	}
 }
-
