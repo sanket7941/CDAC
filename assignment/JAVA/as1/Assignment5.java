@@ -20,7 +20,7 @@ class Assignment5
     System.out.println("2 subtraction");
     System.out.println("3 division");
     System.out.println("4 multiplication \n");
-    System.out.println("");
+    System.out.println("0 exit");
     System.out.println("enter choice");
     choice = a.nextInt();
 
@@ -38,7 +38,7 @@ class Assignment5
             case 4:  int s = m.multiplication(num1,num2);
                       System.out.println(s);
                      break;
-            default: System.out.println("tuzi choice gandli");
+            default: System.out.println(" thank you :)");
                      break;
       }//end switch
   }while (choice !=0);//end while

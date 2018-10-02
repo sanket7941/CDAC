@@ -12,7 +12,7 @@ class math
         return x - y;
       }
 
-      int division(int x , int y)
+      float division(float x , float y)
       {
           return x/y;
         }
