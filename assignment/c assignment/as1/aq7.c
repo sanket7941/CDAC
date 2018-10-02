@@ -22,6 +22,7 @@ void main()
     rem=x2%10;
     rev=rev*10+rem;
     x2=x2/10;
+
   }
   printf("%d",rev);
 
