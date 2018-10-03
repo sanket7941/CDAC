@@ -2,14 +2,9 @@
 variables—a first name (type String), a last name (type String)
 and a monthly salary (double). Provide a constructor that
 initializes the three instance variables. Provide a set and a
-get method for each instance variable. If the monthly salary is
+set method for each instance variable. If the monthly salary is
 not positive, do not set its value. Write a test application
-named
-EmployeeTest
-that
-demonstrates
-class
-Employee’s
+named EmployeeTest that demonstrates class Employee’s
 capabilities. Create two Employee objects and display each
 object’s yearly salary. Then give each Employee a 10% raise and
 display each Employee’s yearly salary again.
@@ -18,10 +13,10 @@ import java.util.Scanner;
 
 	class Employee
 	{
-		String 	firstName;
-		String 	lastName;
-		double 	salary;
-		double 	Amt;
+		private String 	firstName;
+		private String 	lastName;
+		private double 	salary;
+
 // constructer
 		Employee()
 		{
@@ -29,20 +24,49 @@ import java.util.Scanner;
 			this.lastName=" ";
 			this.salary= 0.0;
 		}
-// gettter methods
-					String getfirstName(String a )
+// settter methods
+					void setFirstName(String a )
 					{
-						return this.firstName= a;
+						this.firstName = a;
 					}
-					String getlastName(String b)
+					void setLastName(String b)
 					{
-						return this.lastName = b;
+						this.lastName = b;
 					}
-					double getPrice(double d)
+					void setSalary(double c)
 					{
-						return this.salary = d;
+						this.salary = c;
 					}
 
+// getter method
+          String getFirstName()
+          {
+            return this.firstName;
+          }
+          String getLastName()
+          {
+            return this.lastName;
+          }
+          double getSalary()
+          {
+            return this.salary;
+          }
+
+  // show all info of Employee
+        void showAll()
+        {
+          System.out.println(firstName);
+          System.out.println(lastName);
+          System.out.println(salary);
+          // System.out.println();
+        }
+// 10 % hike in salary
+        void hikeSalary()
+        {
+          double temp = salary/10;
+          this.salary= salary+temp;
+          showAll();
+        }
 		}
 
 class Main
@@ -54,24 +78,48 @@ class Main
 
 			Scanner x = new Scanner(System.in);
 
+      //  Employee 1
 			System.out.println("enter the Employee first name");
 			String s = x.nextLine();
-			I1.getPartnumber(s);
+			e1.setFirstName(s);
 
-			System.out.println("enter the part description");
+			System.out.println("enter the Employee last name");
 			String s1 = x.nextLine();
-			I1.getDescription(s1);
+			e1.setLastName(s1);
 
-			System.out.println("enter the Quentity");
-			int s3 = x.nextInt();
-			I1.getQuentity(s3);
+			System.out.println("enter the salary");
+			double s2 = x.nextDouble();
+			e1.setSalary(s2);
 
-			System.out.println("enter the Price");
-			double s4 = x.nextDouble();
-			I1.getPrice(s4);
+      // Employee 2
 
-			System.out.println("total bill to be paid");
-			double s5 = I1.getInoviceAmount();
-			System.out.println(s5);
-	}
+      System.out.println("enter the Employee FIRST name");
+			String t = x.nextLine();
+			e2.setLastName(t);
+
+			System.out.println("enter the Employee last name");
+			String t1 = x.nextLine();
+			e2.setLastName(t1);
+
+			System.out.println("enter the salary");
+			double t2 = x.nextDouble();
+			e2.setSalary(t2);
+
+      // show details of Employee
+      System.out.println("Employee 1");
+      e1.showAll();
+
+      System.out.println("Employee 2");
+      e2.showAll();
+
+
+		  System.out.println("********************************************");
+      System.out.println("salary after 10% hike");
+      e1.hikeSalary();
+
+      System.out.println("salary after 10% hike");
+      e2.hikeSalary();
+
+
+		}
 }

@@ -2,11 +2,12 @@ import java.util.Scanner;
 
 	class Invoice
 	{
-		String 	Partnumber;
-		String 	Description;
-		int 		Quentity;
-		double 	Price;
-		double 	Amt;
+		// fields
+			private String 	Partnumber;
+			private String 	Description;
+			private int 		Quentity;
+			private double 	Price;
+			private double 	Amt;
 // constructer
 		Invoice()
 		{
@@ -15,31 +16,31 @@ import java.util.Scanner;
 			this.Quentity = 0;
 			this.Price= 0.0;
 		}
-// gettter methods
-					void getPartnumber(String a )
+// settter methods
+					void setPartnumber(String a )
 					{
 						this.Partnumber = a;
 					}
-					void getDescription(String b)
+					void setDescription(String b)
 					{
 						this.Description = b;
 					}
-					void getQuentity(int c)
+					void setQuentity(int c)
 					{
 						this.Quentity = c;
 					}
-					void getPrice(double d)
+					void setPrice(double d)
 					{
 						this.Price = d;
 					}
 
-					double getInoviceAmount()
+					double setInoviceAmount()
 					{
 						Amt = Price * Quentity;
 						return Amt;
 					}
 		}
-
+///main class
 class Program
 {
 	public static void main(String[] args)
@@ -50,22 +51,22 @@ class Program
 
 			System.out.println("enter the part name");
 			String s = x.nextLine();
-			I1.getPartnumber(s);
+			I1.setPartnumber(s);
 
 			System.out.println("enter the part description");
 			String s1 = x.nextLine();
-			I1.getDescription(s1);
+			I1.setDescription(s1);
 
 			System.out.println("enter the Quentity");
 			int s3 = x.nextInt();
-			I1.getQuentity(s3);
+			I1.setQuentity(s3);
 
 			System.out.println("enter the Price");
 			double s4 = x.nextDouble();
-			I1.getPrice(s4);
+			I1.setPrice(s4);
 
 			System.out.println("total bill to be paid");
-			double s5 = I1.getInoviceAmount();
+			double s5 = I1.setInoviceAmount();
 			System.out.println(s5);
 	}
 }
