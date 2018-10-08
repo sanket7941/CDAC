@@ -63,7 +63,7 @@ class HeartRates
       this.maxHeartBeat= 220-a;
       return maxHeartBeat;
     }
-    
+
 }
 
 // CLASS for DATE of birth
@@ -152,3 +152,18 @@ class program
 
     }// end of main
 }// end of program class
+
+/* to use current date and time use below method
+
+public class date
+{
+	  long mili=System.currentTimeMillis();
+	  java.sql.Date date= new java.sql.Date(mili);
+
+    System.out.println(date.getMonth());
+    System.out.println(date.getYear()+ 1900);
+    System.out.println(date.getDate());
+}
+
+
+*/
