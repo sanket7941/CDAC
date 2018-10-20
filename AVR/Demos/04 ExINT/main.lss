@@ -1,0 +1,236 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000120  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00000120  000001b4  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000002  00800060  00800060  000001b4  2**0
+                  ALLOC
+  3 .comment      00000011  00000000  00000000  000001b4  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001c8  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000068  00000000  00000000  00000208  2**3
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000888  00000000  00000000  00000270  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000006e5  00000000  00000000  00000af8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   0000045d  00000000  00000000  000011dd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000074  00000000  00000000  0000163c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000003ae  00000000  00000000  000016b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000047  00000000  00000000  00001a5e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000018  00000000  00000000  00001aa5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 64 00 	jmp	0xc8	; 0xc8 <__vector_1>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 6a 00 	jmp	0xd4	; 0xd4 <__vector_3>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a2 36       	cpi	r26, 0x62	; 98
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 70 00 	call	0xe0	; 0xe0 <main>
+  74:	0c 94 8e 00 	jmp	0x11c	; 0x11c <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <init>:
+}
+
+void init(void)
+{
+	// set buzzer pin as output
+	BUZZER_DDR |= BV(BUZZER);
+  7c:	8b 9a       	sbi	0x11, 3	; 17
+	// turn off the buzzer
+	BUZZER_PORT &= ~BV(BUZZER);
+  7e:	93 98       	cbi	0x12, 3	; 18
+
+	// set int0 pin as input
+	INTR0_DDR &= ~BV(EINT0);
+  80:	8a 98       	cbi	0x11, 2	; 17
+	// write 1 on intr pin - activate pull up
+	INTR0_PORT |= BV(EINT0);
+  82:	92 9a       	sbi	0x12, 2	; 18
+	// configure int0 for falling edge
+	MCUCR |=  BV(ISC01);
+  84:	85 b7       	in	r24, 0x35	; 53
+  86:	82 60       	ori	r24, 0x02	; 2
+  88:	85 bf       	out	0x35, r24	; 53
+	// enable int0 intrrupt
+	GICR |= BV(INT0);
+  8a:	8b b7       	in	r24, 0x3b	; 59
+  8c:	80 64       	ori	r24, 0x40	; 64
+  8e:	8b bf       	out	0x3b, r24	; 59
+
+	// set int2 pin as input
+	INTR2_DDR &= ~BV(EINT2);
+  90:	ba 98       	cbi	0x17, 2	; 23
+	// write 1 on intr pin - activate pull up
+	INTR2_PORT |= BV(EINT2);
+  92:	92 9a       	sbi	0x12, 2	; 18
+	// configure int2 for rising edge
+	MCUCSR |=  BV(ISC2);
+  94:	84 b7       	in	r24, 0x34	; 52
+  96:	80 64       	ori	r24, 0x40	; 64
+  98:	84 bf       	out	0x34, r24	; 52
+	// enable int2 intrrupt
+	GICR |= BV(INT2);
+  9a:	8b b7       	in	r24, 0x3b	; 59
+  9c:	80 62       	ori	r24, 0x20	; 32
+  9e:	8b bf       	out	0x3b, r24	; 59
+
+	// enable global intrrupt
+	sei();
+  a0:	78 94       	sei
+}
+  a2:	08 95       	ret
+
+000000a4 <delay_s>:
+	BUZZER_PORT &= ~BV(BUZZER);
+}
+
+void delay_s(uint8_t s)
+{
+	while(s--)
+  a4:	81 50       	subi	r24, 0x01	; 1
+  a6:	08 f4       	brcc	.+2      	; 0xaa <delay_s+0x6>
+		_delay_ms(1000);
+}
+  a8:	08 95       	ret
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  aa:	2f ef       	ldi	r18, 0xFF	; 255
+  ac:	39 e6       	ldi	r19, 0x69	; 105
+  ae:	98 e1       	ldi	r25, 0x18	; 24
+  b0:	21 50       	subi	r18, 0x01	; 1
+  b2:	30 40       	sbci	r19, 0x00	; 0
+  b4:	90 40       	sbci	r25, 0x00	; 0
+  b6:	e1 f7       	brne	.-8      	; 0xb0 <delay_s+0xc>
+  b8:	00 c0       	rjmp	.+0      	; 0xba <delay_s+0x16>
+  ba:	00 00       	nop
+  bc:	f3 cf       	rjmp	.-26     	; 0xa4 <delay_s>
+
+000000be <beep>:
+	BUZZER_PORT |= BV(BUZZER);
+  be:	93 9a       	sbi	0x12, 3	; 18
+	delay_s(s);
+  c0:	0e 94 52 00 	call	0xa4	; 0xa4 <delay_s>
+	BUZZER_PORT &= ~BV(BUZZER);
+  c4:	93 98       	cbi	0x12, 3	; 18
+}
+  c6:	08 95       	ret
+
+000000c8 <__vector_1>:
+
+ISR(INT0_vect)
+{
+  c8:	8f 93       	push	r24
+	intr0_flag = 1;
+  ca:	81 e0       	ldi	r24, 0x01	; 1
+  cc:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <intr0_flag>
+}
+  d0:	8f 91       	pop	r24
+  d2:	18 95       	reti
+
+000000d4 <__vector_3>:
+
+ISR(INT2_vect)
+{
+  d4:	8f 93       	push	r24
+	intr2_flag = 1;
+  d6:	81 e0       	ldi	r24, 0x01	; 1
+  d8:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+}
+  dc:	8f 91       	pop	r24
+  de:	18 95       	reti
+
+000000e0 <main>:
+	init();
+  e0:	0e 94 3e 00 	call	0x7c	; 0x7c <init>
+		if(intr0_flag)
+  e4:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <intr0_flag>
+  e8:	88 23       	and	r24, r24
+  ea:	29 f0       	breq	.+10     	; 0xf6 <main+0x16>
+			beep(1);
+  ec:	81 e0       	ldi	r24, 0x01	; 1
+  ee:	0e 94 5f 00 	call	0xbe	; 0xbe <beep>
+			intr0_flag = 0;
+  f2:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <intr0_flag>
+		if(intr2_flag)
+  f6:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
+  fa:	88 23       	and	r24, r24
+  fc:	29 f0       	breq	.+10     	; 0x108 <main+0x28>
+			beep(1);
+  fe:	81 e0       	ldi	r24, 0x01	; 1
+ 100:	0e 94 5f 00 	call	0xbe	; 0xbe <beep>
+			intr2_flag = 0;
+ 104:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
+ 108:	2f ef       	ldi	r18, 0xFF	; 255
+ 10a:	81 ee       	ldi	r24, 0xE1	; 225
+ 10c:	94 e0       	ldi	r25, 0x04	; 4
+ 10e:	21 50       	subi	r18, 0x01	; 1
+ 110:	80 40       	sbci	r24, 0x00	; 0
+ 112:	90 40       	sbci	r25, 0x00	; 0
+ 114:	e1 f7       	brne	.-8      	; 0x10e <main+0x2e>
+ 116:	00 c0       	rjmp	.+0      	; 0x118 <main+0x38>
+ 118:	00 00       	nop
+ 11a:	e4 cf       	rjmp	.-56     	; 0xe4 <main+0x4>
+
+0000011c <_exit>:
+ 11c:	f8 94       	cli
+
+0000011e <__stop_program>:
+ 11e:	ff cf       	rjmp	.-2      	; 0x11e <__stop_program>

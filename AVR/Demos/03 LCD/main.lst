@@ -1,0 +1,829 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               	.global	lcd_write_nibble
+  12               	lcd_write_nibble:
+  13               	.LVL0:
+  14               	.LFB11:
+  15               		.file 1 "main.c"
+   1:main.c        **** /*
+   2:main.c        **** 	PORT       pin no 			func
+   3:main.c        **** 	PORT D			4					RS
+   4:main.c        **** 	PORT D			5					RW
+   5:main.c        **** 	PORT D			6					E
+   6:main.c        **** 
+   7:main.c        **** 	PORT B			4					B4
+   8:main.c        **** 	PORT B			5					B5
+   9:main.c        **** 	PORT B			6					B6
+  10:main.c        **** 	PORT B			7					B7
+  11:main.c        **** */
+  12:main.c        **** #include<avr/io.h>
+  13:main.c        **** #include<util/delay.h>
+  14:main.c        **** 
+  15:main.c        **** #define BV(bit) (1<<(bit))
+  16:main.c        **** 
+  17:main.c        **** 
+  18:main.c        **** //  set pins for LCD
+  19:main.c        **** #define DATA_DIR DDRB
+  20:main.c        **** #define DATA_PORT PORTB
+  21:main.c        **** #define DATA_PIN PINB
+  22:main.c        **** 
+  23:main.c        **** #define CTRL_DIR DDRD
+  24:main.c        **** #define CTRL_PORT PORTD
+  25:main.c        **** #define CTRL_PIN PIND
+  26:main.c        **** 
+  27:main.c        **** #define D4 4
+  28:main.c        **** #define D5 5
+  29:main.c        **** #define D6 6
+  30:main.c        **** #define D7 7
+  31:main.c        **** 
+  32:main.c        **** #define RW 4
+  33:main.c        **** #define RS 5
+  34:main.c        **** #define EN 6
+  35:main.c        **** // rs=0: for cmd	and rs=1: for data
+  36:main.c        **** 
+  37:main.c        **** #define LCD_DATA	1
+  38:main.c        **** #define LCD_CMD		0
+  39:main.c        **** 
+  40:main.c        **** #define LCD_DATA_MASK (BV(D4)|BV(D5)|BV(D6)|BV(D7))
+  41:main.c        **** #define LCD_CTRL_MASK (BV(EN)|BV(RW)|BV(RS))
+  42:main.c        **** 
+  43:main.c        **** //  function dec
+  44:main.c        **** 
+  45:main.c        **** void LCDInit(void );
+  46:main.c        **** int lcd_gotoxy(uint8_t row,uint8_t col);
+  47:main.c        **** void lcd_putchar(char ch);
+  48:main.c        **** void lcd_putstring(uint8_t row,const char *str);
+  49:main.c        **** void lcd_write(uint8_t rs,uint8_t val);
+  50:main.c        **** void lcd_write_nibble(uint8_t rs ,uint8_t val);
+  51:main.c        **** 
+  52:main.c        **** 
+  53:main.c        **** // initialize the LCD
+  54:main.c        **** void LCDInit(void )
+  55:main.c        ****  {
+  56:main.c        ****   DATA_DIR |= LCD_DATA_MASK;
+  57:main.c        ****   DATA_PORT &= ~LCD_DATA_MASK;
+  58:main.c        ****   CTRL_DIR |= LCD_CTRL_MASK;
+  59:main.c        ****   CTRL_PORT &= ~LCD_CTRL_MASK;
+  60:main.c        **** 
+  61:main.c        ****   _delay_ms(100);
+  62:main.c        **** 
+  63:main.c        ****   lcd_write(LCD_CMD,0x28);
+  64:main.c        ****   lcd_write(LCD_CMD,0x0c);
+  65:main.c        ****   lcd_write(LCD_CMD,0x01); // clear the LCD screen
+  66:main.c        ****  }
+  67:main.c        **** // set the position of the curser
+  68:main.c        ****  int lcd_gotoxy(uint8_t row,uint8_t col)
+  69:main.c        **** 
+  70:main.c        ****  {
+  71:main.c        ****    if (row>1 || col >15)
+  72:main.c        ****    return 0;
+  73:main.c        ****    if(row==0)
+  74:main.c        ****    { lcd_write(LCD_CMD,0x80+col);}
+  75:main.c        ****    else
+  76:main.c        ****     {
+  77:main.c        ****     lcd_write(LCD_CMD,0xc0+col);
+  78:main.c        ****     }
+  79:main.c        ****     return 1;
+  80:main.c        ****   }
+  81:main.c        **** // take data and commant in char and string form
+  82:main.c        ****   void lcd_putchar(char ch)
+  83:main.c        ****   {
+  84:main.c        ****     lcd_write(LCD_DATA,ch);
+  85:main.c        ****   }
+  86:main.c        **** 
+  87:main.c        ****   void lcd_putstring(uint8_t row,const char *str)
+  88:main.c        ****   {
+  89:main.c        ****     int cnt;
+  90:main.c        ****     lcd_gotoxy(row,0);
+  91:main.c        ****     for(cnt=0;*str!='\0' && cnt<16;++cnt)
+  92:main.c        ****     {
+  93:main.c        ****       lcd_putchar(*str++);
+  94:main.c        ****     }
+  95:main.c        ****   }
+  96:main.c        **** // write onto the LCD controller
+  97:main.c        **** 
+  98:main.c        **** void lcd_write(uint8_t rs,uint8_t val)
+  99:main.c        **** {
+ 100:main.c        ****   uint8_t high = val & 0xF0,low = val << 4 ;
+ 101:main.c        ****   _delay_ms(3);
+ 102:main.c        ****   lcd_write_nibble(rs,high);
+ 103:main.c        ****   lcd_write_nibble(rs,low);
+ 104:main.c        **** }
+ 105:main.c        **** 
+ 106:main.c        **** void lcd_write_nibble(uint8_t rs ,uint8_t val)
+ 107:main.c        **** {
+  16               		.loc 1 107 1 view -0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+ 108:main.c        ****   // rs=0: for cmd	and rs=1: for data
+ 109:main.c        ****   if(rs==LCD_CMD)
+  22               		.loc 1 109 3 view .LVU1
+  23               		.loc 1 109 5 is_stmt 0 view .LVU2
+  24 0000 8111      		cpse r24,__zero_reg__
+  25 0002 00C0      		rjmp .L2
+ 110:main.c        ****     CTRL_PORT &= ~BV(RS);
+  26               		.loc 1 110 5 is_stmt 1 view .LVU3
+  27               		.loc 1 110 15 is_stmt 0 view .LVU4
+  28 0004 9598      		cbi 0x12,5
+  29               	.L3:
+ 111:main.c        ****     else
+ 112:main.c        ****     CTRL_PORT |= BV(RS);
+ 113:main.c        **** 
+ 114:main.c        ****     asm("nop");
+  30               		.loc 1 114 5 is_stmt 1 view .LVU5
+  31               	/* #APP */
+  32               	 ;  114 "main.c" 1
+  33 0006 0000      		nop
+  34               	 ;  0 "" 2
+ 115:main.c        **** 
+ 116:main.c        ****     CTRL_PORT &= ~BV(RW);
+  35               		.loc 1 116 5 view .LVU6
+  36               		.loc 1 116 15 is_stmt 0 view .LVU7
+  37               	/* #NOAPP */
+  38 0008 9498      		cbi 0x12,4
+ 117:main.c        **** 
+ 118:main.c        ****     DATA_PORT &= ~LCD_DATA_MASK;
+  39               		.loc 1 118 5 is_stmt 1 view .LVU8
+  40               		.loc 1 118 15 is_stmt 0 view .LVU9
+  41 000a 88B3      		in r24,0x18
+  42               	.LVL1:
+  43               		.loc 1 118 15 view .LVU10
+  44 000c 8F70      		andi r24,lo8(15)
+  45 000e 88BB      		out 0x18,r24
+ 119:main.c        ****     DATA_PORT |= val &0x0F;
+  46               		.loc 1 119 5 is_stmt 1 view .LVU11
+  47               		.loc 1 119 15 is_stmt 0 view .LVU12
+  48 0010 88B3      		in r24,0x18
+  49               		.loc 1 119 22 view .LVU13
+  50 0012 6F70      		andi r22,lo8(15)
+  51               	.LVL2:
+  52               		.loc 1 119 15 view .LVU14
+  53 0014 682B      		or r22,r24
+  54 0016 68BB      		out 0x18,r22
+ 120:main.c        **** 
+ 121:main.c        ****     CTRL_PORT |= BV(EN); // Enable =1
+  55               		.loc 1 121 5 is_stmt 1 view .LVU15
+  56               		.loc 1 121 15 is_stmt 0 view .LVU16
+  57 0018 969A      		sbi 0x12,6
+ 122:main.c        ****     asm("nop");
+  58               		.loc 1 122 5 is_stmt 1 view .LVU17
+  59               	/* #APP */
+  60               	 ;  122 "main.c" 1
+  61 001a 0000      		nop
+  62               	 ;  0 "" 2
+ 123:main.c        ****     CTRL_PORT &= ~BV(EN); // Enable = 0
+  63               		.loc 1 123 5 view .LVU18
+  64               		.loc 1 123 15 is_stmt 0 view .LVU19
+  65               	/* #NOAPP */
+  66 001c 9698      		cbi 0x12,6
+  67               	/* epilogue start */
+ 124:main.c        **** 
+ 125:main.c        **** }
+  68               		.loc 1 125 1 view .LVU20
+  69 001e 0895      		ret
+  70               	.LVL3:
+  71               	.L2:
+ 112:main.c        **** 
+  72               		.loc 1 112 5 is_stmt 1 view .LVU21
+ 112:main.c        **** 
+  73               		.loc 1 112 15 is_stmt 0 view .LVU22
+  74 0020 959A      		sbi 0x12,5
+  75 0022 00C0      		rjmp .L3
+  76               		.cfi_endproc
+  77               	.LFE11:
+  79               	.global	lcd_write
+  81               	lcd_write:
+  82               	.LVL4:
+  83               	.LFB10:
+  99:main.c        ****   uint8_t high = val & 0xF0,low = val << 4 ;
+  84               		.loc 1 99 1 is_stmt 1 view -0
+  85               		.cfi_startproc
+  99:main.c        ****   uint8_t high = val & 0xF0,low = val << 4 ;
+  86               		.loc 1 99 1 is_stmt 0 view .LVU24
+  87 0024 CF93      		push r28
+  88               	.LCFI0:
+  89               		.cfi_def_cfa_offset 3
+  90               		.cfi_offset 28, -2
+  91 0026 DF93      		push r29
+  92               	.LCFI1:
+  93               		.cfi_def_cfa_offset 4
+  94               		.cfi_offset 29, -3
+  95               	/* prologue: function */
+  96               	/* frame size = 0 */
+  97               	/* stack size = 2 */
+  98               	.L__stack_usage = 2
+  99 0028 D82F      		mov r29,r24
+ 100 002a C62F      		mov r28,r22
+ 100:main.c        ****   _delay_ms(3);
+ 101               		.loc 1 100 3 is_stmt 1 view .LVU25
+ 102               	.LVL5:
+ 101:main.c        ****   lcd_write_nibble(rs,high);
+ 103               		.loc 1 101 3 view .LVU26
+ 104               	.LBB6:
+ 105               	.LBI6:
+ 106               		.file 2 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h"
+   1:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    All rights reserved.
+   5:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+   6:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+   9:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  12:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****      distribution.
+  16:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  17:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  21:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  33:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /* $Id: delay.h.in 2506 2016-02-08 10:05:45Z joerg_wunsch $ */
+  34:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  35:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  38:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #ifndef __DOXYGEN__
+  39:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #  endif
+  42:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
+  43:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  44:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #include <inttypes.h>
+  45:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  46:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #include <math.h>
+  47:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  48:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /** \file */
+  49:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     \code
+  51:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  53:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     #include <util/delay.h>
+  54:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     \endcode
+  55:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  56:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  57:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     used.
+  60:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  61:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  62:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  64:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  66:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  67:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  69:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  70:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  71:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  76:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  77:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     routines linked into the application.
+  78:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  79:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  80:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  83:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** */
+  84:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  85:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  86:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #endif
+  89:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  90:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #ifndef F_CPU
+  91:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  92:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /** \ingroup util_delay
+  94:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     \def F_CPU
+  95:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     \brief CPU frequency in Hz
+  96:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+  97:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
+ 102:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 103:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****     integer value.
+ 107:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****  */
+ 108:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** # define F_CPU 1000000UL
+ 109:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #endif
+ 110:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 111:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+ 112:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #endif
+ 114:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 115:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 118:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #  include <math.h>
+ 119:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #endif
+ 120:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 121:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /**
+ 122:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    \ingroup util_delay
+ 123:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 124:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 126:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 129:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 131:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 136:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 137:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 141:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 142:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    microseconds of delay.
+ 146:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 147:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    respectively.
+ 151:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 152:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    \note
+ 153:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 154:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 155:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 159:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    not available to the compiler then.
+ 163:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 164:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****  */
+ 165:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** void
+ 166:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 107               		.loc 2 166 1 view .LVU27
+ 108               	.LBB7:
+ 167:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** {
+ 168:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	double __tmp ;
+ 109               		.loc 2 168 2 view .LVU28
+ 169:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 172:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 110               		.loc 2 172 2 view .LVU29
+ 173:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 111               		.loc 2 173 2 view .LVU30
+ 174:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 112               		.loc 2 174 2 view .LVU31
+ 175:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 176:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 179:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 182:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#else
+ 183:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 		//round up by default
+ 184:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 113               		.loc 2 184 3 view .LVU32
+ 185:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#endif
+ 186:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 187:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 114               		.loc 2 187 2 view .LVU33
+ 115 002c 8FE6      		ldi r24,lo8(5999)
+ 116 002e 97E1      		ldi r25,hi8(5999)
+ 117 0030 0197      	1:	sbiw r24,1
+ 118 0032 01F4      		brne 1b
+ 119               	.LVL6:
+ 120               		.loc 2 187 2 is_stmt 0 view .LVU34
+ 121 0034 00C0      		rjmp .
+ 122 0036 0000      		nop
+ 123               	.LVL7:
+ 124               		.loc 2 187 2 view .LVU35
+ 125               	.LBE7:
+ 126               	.LBE6:
+ 102:main.c        ****   lcd_write_nibble(rs,low);
+ 127               		.loc 1 102 3 is_stmt 1 view .LVU36
+ 100:main.c        ****   _delay_ms(3);
+ 128               		.loc 1 100 11 is_stmt 0 view .LVU37
+ 129 0038 607F      		andi r22,lo8(-16)
+ 130               	.LVL8:
+ 102:main.c        ****   lcd_write_nibble(rs,low);
+ 131               		.loc 1 102 3 view .LVU38
+ 132 003a 8D2F      		mov r24,r29
+ 133 003c 0E94 0000 		call lcd_write_nibble
+ 134               	.LVL9:
+ 103:main.c        **** }
+ 135               		.loc 1 103 3 is_stmt 1 view .LVU39
+ 100:main.c        ****   _delay_ms(3);
+ 136               		.loc 1 100 29 is_stmt 0 view .LVU40
+ 137 0040 6C2F      		mov r22,r28
+ 138 0042 6295      		swap r22
+ 139 0044 607F      		andi r22,lo8(-16)
+ 103:main.c        **** }
+ 140               		.loc 1 103 3 view .LVU41
+ 141 0046 8D2F      		mov r24,r29
+ 142 0048 0E94 0000 		call lcd_write_nibble
+ 143               	.LVL10:
+ 144               	/* epilogue start */
+ 104:main.c        **** 
+ 145               		.loc 1 104 1 view .LVU42
+ 146 004c DF91      		pop r29
+ 147               	.LVL11:
+ 104:main.c        **** 
+ 148               		.loc 1 104 1 view .LVU43
+ 149 004e CF91      		pop r28
+ 150               	.LVL12:
+ 104:main.c        **** 
+ 151               		.loc 1 104 1 view .LVU44
+ 152 0050 0895      		ret
+ 153               		.cfi_endproc
+ 154               	.LFE10:
+ 156               	.global	LCDInit
+ 158               	LCDInit:
+ 159               	.LFB6:
+  55:main.c        ****   DATA_DIR |= LCD_DATA_MASK;
+ 160               		.loc 1 55 2 is_stmt 1 view -0
+ 161               		.cfi_startproc
+ 162               	/* prologue: function */
+ 163               	/* frame size = 0 */
+ 164               	/* stack size = 0 */
+ 165               	.L__stack_usage = 0
+  56:main.c        ****   DATA_PORT &= ~LCD_DATA_MASK;
+ 166               		.loc 1 56 3 view .LVU46
+  56:main.c        ****   DATA_PORT &= ~LCD_DATA_MASK;
+ 167               		.loc 1 56 12 is_stmt 0 view .LVU47
+ 168 0052 87B3      		in r24,0x17
+ 169 0054 806F      		ori r24,lo8(-16)
+ 170 0056 87BB      		out 0x17,r24
+  57:main.c        ****   CTRL_DIR |= LCD_CTRL_MASK;
+ 171               		.loc 1 57 3 is_stmt 1 view .LVU48
+  57:main.c        ****   CTRL_DIR |= LCD_CTRL_MASK;
+ 172               		.loc 1 57 13 is_stmt 0 view .LVU49
+ 173 0058 88B3      		in r24,0x18
+ 174 005a 8F70      		andi r24,lo8(15)
+ 175 005c 88BB      		out 0x18,r24
+  58:main.c        ****   CTRL_PORT &= ~LCD_CTRL_MASK;
+ 176               		.loc 1 58 3 is_stmt 1 view .LVU50
+  58:main.c        ****   CTRL_PORT &= ~LCD_CTRL_MASK;
+ 177               		.loc 1 58 12 is_stmt 0 view .LVU51
+ 178 005e 81B3      		in r24,0x11
+ 179 0060 8067      		ori r24,lo8(112)
+ 180 0062 81BB      		out 0x11,r24
+  59:main.c        **** 
+ 181               		.loc 1 59 3 is_stmt 1 view .LVU52
+  59:main.c        **** 
+ 182               		.loc 1 59 13 is_stmt 0 view .LVU53
+ 183 0064 82B3      		in r24,0x12
+ 184 0066 8F78      		andi r24,lo8(-113)
+ 185 0068 82BB      		out 0x12,r24
+  61:main.c        **** 
+ 186               		.loc 1 61 3 is_stmt 1 view .LVU54
+ 187               	.LVL13:
+ 188               	.LBB8:
+ 189               	.LBI8:
+ 166:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** {
+ 190               		.loc 2 166 1 view .LVU55
+ 191               	.LBB9:
+ 168:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 192               		.loc 2 168 2 view .LVU56
+ 172:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 193               		.loc 2 172 2 view .LVU57
+ 173:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 194               		.loc 2 173 2 view .LVU58
+ 174:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
+ 195               		.loc 2 174 2 view .LVU59
+ 184:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#endif
+ 196               		.loc 2 184 3 view .LVU60
+ 197               		.loc 2 187 2 view .LVU61
+ 198 006a 2FEF      		ldi r18,lo8(159999)
+ 199 006c 80E7      		ldi r24,hi8(159999)
+ 200 006e 92E0      		ldi r25,hlo8(159999)
+ 201 0070 2150      	1:	subi r18,1
+ 202 0072 8040      		sbci r24,0
+ 203 0074 9040      		sbci r25,0
+ 204 0076 01F4      		brne 1b
+ 205 0078 00C0      		rjmp .
+ 206 007a 0000      		nop
+ 207               	.LVL14:
+ 208               		.loc 2 187 2 is_stmt 0 view .LVU62
+ 209               	.LBE9:
+ 210               	.LBE8:
+  63:main.c        ****   lcd_write(LCD_CMD,0x0c);
+ 211               		.loc 1 63 3 is_stmt 1 view .LVU63
+ 212 007c 68E2      		ldi r22,lo8(40)
+ 213 007e 80E0      		ldi r24,0
+ 214 0080 0E94 0000 		call lcd_write
+ 215               	.LVL15:
+  64:main.c        ****   lcd_write(LCD_CMD,0x01); // clear the LCD screen
+ 216               		.loc 1 64 3 view .LVU64
+ 217 0084 6CE0      		ldi r22,lo8(12)
+ 218 0086 80E0      		ldi r24,0
+ 219 0088 0E94 0000 		call lcd_write
+ 220               	.LVL16:
+  65:main.c        ****  }
+ 221               		.loc 1 65 3 view .LVU65
+ 222 008c 61E0      		ldi r22,lo8(1)
+ 223 008e 80E0      		ldi r24,0
+ 224 0090 0E94 0000 		call lcd_write
+ 225               	.LVL17:
+ 226               	/* epilogue start */
+  66:main.c        **** // set the position of the curser
+ 227               		.loc 1 66 2 is_stmt 0 view .LVU66
+ 228 0094 0895      		ret
+ 229               		.cfi_endproc
+ 230               	.LFE6:
+ 232               	.global	lcd_gotoxy
+ 234               	lcd_gotoxy:
+ 235               	.LVL18:
+ 236               	.LFB7:
+  70:main.c        ****    if (row>1 || col >15)
+ 237               		.loc 1 70 2 is_stmt 1 view -0
+ 238               		.cfi_startproc
+ 239               	/* prologue: function */
+ 240               	/* frame size = 0 */
+ 241               	/* stack size = 0 */
+ 242               	.L__stack_usage = 0
+  71:main.c        ****    return 0;
+ 243               		.loc 1 71 4 view .LVU68
+  71:main.c        ****    return 0;
+ 244               		.loc 1 71 7 is_stmt 0 view .LVU69
+ 245 0096 8230      		cpi r24,lo8(2)
+ 246 0098 00F4      		brsh .L10
+  71:main.c        ****    return 0;
+ 247               		.loc 1 71 14 discriminator 1 view .LVU70
+ 248 009a 6031      		cpi r22,lo8(16)
+ 249 009c 00F4      		brsh .L10
+  73:main.c        ****    { lcd_write(LCD_CMD,0x80+col);}
+ 250               		.loc 1 73 4 is_stmt 1 view .LVU71
+  73:main.c        ****    { lcd_write(LCD_CMD,0x80+col);}
+ 251               		.loc 1 73 6 is_stmt 0 view .LVU72
+ 252 009e 8111      		cpse r24,__zero_reg__
+ 253 00a0 00C0      		rjmp .L8
+ 254               	.LVL19:
+ 255               	.LBB12:
+ 256               	.LBB13:
+  74:main.c        ****    else
+ 257               		.loc 1 74 6 is_stmt 1 view .LVU73
+ 258 00a2 6058      		subi r22,lo8(-(-128))
+ 259               	.LVL20:
+ 260               	.L11:
+  74:main.c        ****    else
+ 261               		.loc 1 74 6 is_stmt 0 view .LVU74
+ 262               	.LBE13:
+ 263               	.LBE12:
+  77:main.c        ****     }
+ 264               		.loc 1 77 5 view .LVU75
+ 265 00a4 0E94 0000 		call lcd_write
+ 266               	.LVL21:
+  79:main.c        ****   }
+ 267               		.loc 1 79 12 view .LVU76
+ 268 00a8 81E0      		ldi r24,lo8(1)
+ 269 00aa 90E0      		ldi r25,0
+ 270 00ac 0895      		ret
+ 271               	.LVL22:
+ 272               	.L8:
+  77:main.c        ****     }
+ 273               		.loc 1 77 5 is_stmt 1 view .LVU77
+ 274 00ae 6054      		subi r22,lo8(-(-64))
+ 275               	.LVL23:
+  77:main.c        ****     }
+ 276               		.loc 1 77 5 is_stmt 0 view .LVU78
+ 277 00b0 80E0      		ldi r24,0
+ 278               	.LVL24:
+  77:main.c        ****     }
+ 279               		.loc 1 77 5 view .LVU79
+ 280 00b2 00C0      		rjmp .L11
+ 281               	.LVL25:
+ 282               	.L10:
+  72:main.c        ****    if(row==0)
+ 283               		.loc 1 72 11 view .LVU80
+ 284 00b4 90E0      		ldi r25,0
+ 285 00b6 80E0      		ldi r24,0
+ 286               	.LVL26:
+ 287               	/* epilogue start */
+  80:main.c        **** // take data and commant in char and string form
+ 288               		.loc 1 80 3 view .LVU81
+ 289 00b8 0895      		ret
+ 290               		.cfi_endproc
+ 291               	.LFE7:
+ 293               	.global	lcd_putchar
+ 295               	lcd_putchar:
+ 296               	.LVL27:
+ 297               	.LFB8:
+  83:main.c        ****     lcd_write(LCD_DATA,ch);
+ 298               		.loc 1 83 3 is_stmt 1 view -0
+ 299               		.cfi_startproc
+ 300               	/* prologue: function */
+ 301               	/* frame size = 0 */
+ 302               	/* stack size = 0 */
+ 303               	.L__stack_usage = 0
+  84:main.c        ****   }
+ 304               		.loc 1 84 5 view .LVU83
+ 305 00ba 682F      		mov r22,r24
+ 306 00bc 81E0      		ldi r24,lo8(1)
+ 307               	.LVL28:
+  84:main.c        ****   }
+ 308               		.loc 1 84 5 is_stmt 0 view .LVU84
+ 309 00be 0E94 0000 		call lcd_write
+ 310               	.LVL29:
+ 311               	/* epilogue start */
+  85:main.c        **** 
+ 312               		.loc 1 85 3 view .LVU85
+ 313 00c2 0895      		ret
+ 314               		.cfi_endproc
+ 315               	.LFE8:
+ 317               	.global	lcd_putstring
+ 319               	lcd_putstring:
+ 320               	.LVL30:
+ 321               	.LFB9:
+  88:main.c        ****     int cnt;
+ 322               		.loc 1 88 3 is_stmt 1 view -0
+ 323               		.cfi_startproc
+  88:main.c        ****     int cnt;
+ 324               		.loc 1 88 3 is_stmt 0 view .LVU87
+ 325 00c4 0F93      		push r16
+ 326               	.LCFI2:
+ 327               		.cfi_def_cfa_offset 3
+ 328               		.cfi_offset 16, -2
+ 329 00c6 1F93      		push r17
+ 330               	.LCFI3:
+ 331               		.cfi_def_cfa_offset 4
+ 332               		.cfi_offset 17, -3
+ 333 00c8 CF93      		push r28
+ 334               	.LCFI4:
+ 335               		.cfi_def_cfa_offset 5
+ 336               		.cfi_offset 28, -4
+ 337 00ca DF93      		push r29
+ 338               	.LCFI5:
+ 339               		.cfi_def_cfa_offset 6
+ 340               		.cfi_offset 29, -5
+ 341               	/* prologue: function */
+ 342               	/* frame size = 0 */
+ 343               	/* stack size = 4 */
+ 344               	.L__stack_usage = 4
+ 345 00cc 8B01      		movw r16,r22
+  89:main.c        ****     lcd_gotoxy(row,0);
+ 346               		.loc 1 89 5 is_stmt 1 view .LVU88
+  90:main.c        ****     for(cnt=0;*str!='\0' && cnt<16;++cnt)
+ 347               		.loc 1 90 5 view .LVU89
+ 348 00ce 60E0      		ldi r22,0
+ 349               	.LVL31:
+  90:main.c        ****     for(cnt=0;*str!='\0' && cnt<16;++cnt)
+ 350               		.loc 1 90 5 is_stmt 0 view .LVU90
+ 351 00d0 0E94 0000 		call lcd_gotoxy
+ 352               	.LVL32:
+  91:main.c        ****     {
+ 353               		.loc 1 91 5 is_stmt 1 view .LVU91
+  91:main.c        ****     {
+ 354               		.loc 1 91 5 is_stmt 0 view .LVU92
+ 355 00d4 E801      		movw r28,r16
+ 356 00d6 0F5E      		subi r16,-17
+ 357 00d8 1F4F      		sbci r17,-1
+ 358               	.LVL33:
+ 359               	.L14:
+  91:main.c        ****     {
+ 360               		.loc 1 91 15 discriminator 1 view .LVU93
+ 361 00da 8991      		ld r24,Y+
+ 362               	.LVL34:
+  91:main.c        ****     {
+ 363               		.loc 1 91 5 discriminator 1 view .LVU94
+ 364 00dc 8823      		tst r24
+ 365 00de 01F0      		breq .L13
+  91:main.c        ****     {
+ 366               		.loc 1 91 26 discriminator 3 view .LVU95
+ 367 00e0 C017      		cp r28,r16
+ 368 00e2 D107      		cpc r29,r17
+ 369 00e4 01F4      		brne .L16
+ 370               	.L13:
+ 371               	/* epilogue start */
+  95:main.c        **** // write onto the LCD controller
+ 372               		.loc 1 95 3 view .LVU96
+ 373 00e6 DF91      		pop r29
+ 374 00e8 CF91      		pop r28
+ 375               	.LVL35:
+  95:main.c        **** // write onto the LCD controller
+ 376               		.loc 1 95 3 view .LVU97
+ 377 00ea 1F91      		pop r17
+ 378 00ec 0F91      		pop r16
+ 379 00ee 0895      		ret
+ 380               	.LVL36:
+ 381               	.L16:
+  93:main.c        ****     }
+ 382               		.loc 1 93 7 is_stmt 1 discriminator 4 view .LVU98
+  93:main.c        ****     }
+ 383               		.loc 1 93 7 is_stmt 0 discriminator 4 view .LVU99
+ 384 00f0 0E94 0000 		call lcd_putchar
+ 385               	.LVL37:
+  93:main.c        ****     }
+ 386               		.loc 1 93 7 discriminator 4 view .LVU100
+ 387 00f4 00C0      		rjmp .L14
+ 388               		.cfi_endproc
+ 389               	.LFE9:
+ 391               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 392               	.LC0:
+ 393 0000 5768 6174 		.string	"What's up B**tch"
+ 393      2773 2075 
+ 393      7020 422A 
+ 393      2A74 6368 
+ 393      00
+ 394               	.LC1:
+ 395 0011 472A 2A6E 		.string	"G**nd Marra"
+ 395      6420 4D61 
+ 395      7272 6100 
+ 396               		.section	.text.startup,"ax",@progbits
+ 397               	.global	main
+ 399               	main:
+ 400               	.LFB12:
+ 126:main.c        **** // --------------------- MAIN CODE-----------------------------
+ 127:main.c        **** 
+ 128:main.c        **** int main(void)
+ 129:main.c        **** {
+ 401               		.loc 1 129 1 is_stmt 1 view -0
+ 402               		.cfi_startproc
+ 403               	/* prologue: function */
+ 404               	/* frame size = 0 */
+ 405               	/* stack size = 0 */
+ 406               	.L__stack_usage = 0
+ 130:main.c        **** 	LCDInit();
+ 407               		.loc 1 130 2 view .LVU102
+ 408 0000 0E94 0000 		call LCDInit
+ 409               	.LVL38:
+ 131:main.c        **** 	lcd_putstring(0, "What's up B**tch");
+ 410               		.loc 1 131 2 view .LVU103
+ 411 0004 60E0      		ldi r22,lo8(.LC0)
+ 412 0006 70E0      		ldi r23,hi8(.LC0)
+ 413 0008 80E0      		ldi r24,0
+ 414 000a 0E94 0000 		call lcd_putstring
+ 415               	.LVL39:
+ 132:main.c        **** 	lcd_putstring(1, "G**nd Marra");
+ 416               		.loc 1 132 2 view .LVU104
+ 417 000e 60E0      		ldi r22,lo8(.LC1)
+ 418 0010 70E0      		ldi r23,hi8(.LC1)
+ 419 0012 81E0      		ldi r24,lo8(1)
+ 420 0014 0E94 0000 		call lcd_putstring
+ 421               	.LVL40:
+ 422               	.L21:
+ 133:main.c        **** 	while(1);
+ 423               		.loc 1 133 2 discriminator 1 view .LVU105
+ 424               		.loc 1 133 10 discriminator 1 view .LVU106
+ 425 0018 00C0      		rjmp .L21
+ 426               		.cfi_endproc
+ 427               	.LFE12:
+ 429               		.text
+ 430               	.Letext0:
+ 431               		.file 3 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/cctF0ga2.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cctF0ga2.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cctF0ga2.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cctF0ga2.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cctF0ga2.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cctF0ga2.s:12     .text:0000000000000000 lcd_write_nibble
+     /tmp/cctF0ga2.s:81     .text:0000000000000024 lcd_write
+     /tmp/cctF0ga2.s:158    .text:0000000000000052 LCDInit
+     /tmp/cctF0ga2.s:234    .text:0000000000000096 lcd_gotoxy
+     /tmp/cctF0ga2.s:295    .text:00000000000000ba lcd_putchar
+     /tmp/cctF0ga2.s:319    .text:00000000000000c4 lcd_putstring
+     /tmp/cctF0ga2.s:399    .text.startup:0000000000000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
