@@ -1,0 +1,160 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               	.global	timerDealyMS
+  12               	timerDealyMS:
+  13               	.LVL0:
+  14               	.LFB6:
+  15               		.file 1 "main.c"
+   1:main.c        **** /*
+   2:main.c        ****   timmer code with polling
+   3:main.c        ****     usuing timmer 1
+   4:main.c        **** */
+   5:main.c        **** 
+   6:main.c        **** #include <avr/io.h>
+   7:main.c        **** #include <util/delay.h>
+   8:main.c        **** 
+   9:main.c        **** #define BV(x) (1<<(x))
+  10:main.c        **** 
+  11:main.c        **** void timerDealyMS(uint16_t ms)
+  12:main.c        **** {
+  16               		.loc 1 12 1 view -0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  13:main.c        ****   uint16_t cnt;
+  22               		.loc 1 13 3 view .LVU1
+  14:main.c        **** 
+  15:main.c        ****   cnt =((F_CPU/1000) * ms>>10);
+  23               		.loc 1 15 3 view .LVU2
+  16:main.c        **** 
+  17:main.c        ****   TCNT1 = 65535 - cnt; //we are using  overflow
+  24               		.loc 1 17 3 view .LVU3
+  15:main.c        **** 
+  25               		.loc 1 15 22 is_stmt 0 view .LVU4
+  26 0000 9C01      		movw r18,r24
+  27 0002 A0E4      		ldi r26,lo8(64)
+  28 0004 BFE1      		ldi r27,lo8(31)
+  29 0006 0E94 0000 		call __umulhisi3
+  15:main.c        **** 
+  30               		.loc 1 15 26 view .LVU5
+  31 000a 2AE0      		ldi r18,10
+  32               		1:
+  33 000c 9695      		lsr r25
+  34 000e 8795      		ror r24
+  35 0010 7795      		ror r23
+  36 0012 6795      		ror r22
+  37 0014 2A95      		dec r18
+  38 0016 01F4      		brne 1b
+  39               		.loc 1 17 17 view .LVU6
+  40 0018 6095      		com r22
+  41 001a 7095      		com r23
+  42               		.loc 1 17 9 view .LVU7
+  43 001c 7DBD      		out 0x2c+1,r23
+  44 001e 6CBD      		out 0x2c,r22
+  18:main.c        **** 
+  19:main.c        ****   TCCR1A=0x00;
+  45               		.loc 1 19 3 is_stmt 1 view .LVU8
+  46               		.loc 1 19 9 is_stmt 0 view .LVU9
+  47 0020 1FBC      		out 0x2f,__zero_reg__
+  20:main.c        ****   TCCR1B= BV(CS12)|BV(CS10); // set for OF flag
+  48               		.loc 1 20 3 is_stmt 1 view .LVU10
+  49               		.loc 1 20 9 is_stmt 0 view .LVU11
+  50 0022 85E0      		ldi r24,lo8(5)
+  51               	.LVL1:
+  52               		.loc 1 20 9 view .LVU12
+  53 0024 8EBD      		out 0x2e,r24
+  21:main.c        **** 
+  22:main.c        ****   while((TIFR & BV (TOV1)) == 0); // wait until ov flag
+  54               		.loc 1 22 3 is_stmt 1 view .LVU13
+  55               	.L2:
+  56               		.loc 1 22 33 discriminator 1 view .LVU14
+  57               		.loc 1 22 8 is_stmt 0 discriminator 1 view .LVU15
+  58 0026 08B6      		in __tmp_reg__,0x38
+  59 0028 02FE      		sbrs __tmp_reg__,2
+  60 002a 00C0      		rjmp .L2
+  23:main.c        **** 
+  24:main.c        ****   TIFR = BV(TOV1);
+  61               		.loc 1 24 3 is_stmt 1 view .LVU16
+  62               		.loc 1 24 8 is_stmt 0 view .LVU17
+  63 002c 84E0      		ldi r24,lo8(4)
+  64 002e 88BF      		out 0x38,r24
+  65               	/* epilogue start */
+  25:main.c        **** }
+  66               		.loc 1 25 1 view .LVU18
+  67 0030 0895      		ret
+  68               		.cfi_endproc
+  69               	.LFE6:
+  71               		.section	.text.startup,"ax",@progbits
+  72               	.global	main
+  74               	main:
+  75               	.LFB7:
+  26:main.c        **** 
+  27:main.c        **** int main(void)
+  28:main.c        **** {
+  76               		.loc 1 28 1 is_stmt 1 view -0
+  77               		.cfi_startproc
+  78               	/* prologue: function */
+  79               	/* frame size = 0 */
+  80               	/* stack size = 0 */
+  81               	.L__stack_usage = 0
+  29:main.c        **** 	uint8_t data = 0xFF;
+  82               		.loc 1 29 2 view .LVU20
+  83               	.LVL2:
+  30:main.c        **** 	// make PORTC as output
+  31:main.c        **** 	DDRC = 0xFF;
+  84               		.loc 1 31 2 view .LVU21
+  85               		.loc 1 31 7 is_stmt 0 view .LVU22
+  86 0000 8FEF      		ldi r24,lo8(-1)
+  87 0002 84BB      		out 0x14,r24
+  29:main.c        **** 	uint8_t data = 0xFF;
+  88               		.loc 1 29 10 view .LVU23
+  89 0004 CFEF      		ldi r28,lo8(-1)
+  90               	.LVL3:
+  91               	.L6:
+  32:main.c        **** 	// on-off leds with given time delay.
+  33:main.c        **** 	while(1)
+  92               		.loc 1 33 2 is_stmt 1 discriminator 1 view .LVU24
+  34:main.c        **** 	{
+  35:main.c        **** 		PORTC = data;
+  93               		.loc 1 35 3 discriminator 1 view .LVU25
+  94               		.loc 1 35 9 is_stmt 0 discriminator 1 view .LVU26
+  95 0006 C5BB      		out 0x15,r28
+  36:main.c        **** 		timerDealyMS(300);
+  96               		.loc 1 36 3 is_stmt 1 discriminator 1 view .LVU27
+  97 0008 8CE2      		ldi r24,lo8(44)
+  98 000a 91E0      		ldi r25,lo8(1)
+  99 000c 0E94 0000 		call timerDealyMS
+ 100               	.LVL4:
+  37:main.c        **** 		data = ~data;
+ 101               		.loc 1 37 3 discriminator 1 view .LVU28
+ 102               		.loc 1 37 8 is_stmt 0 discriminator 1 view .LVU29
+ 103 0010 C095      		com r28
+ 104               	.LVL5:
+ 105               		.loc 1 37 8 discriminator 1 view .LVU30
+ 106 0012 00C0      		rjmp .L6
+ 107               		.cfi_endproc
+ 108               	.LFE7:
+ 110               		.text
+ 111               	.Letext0:
+ 112               		.file 2 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccuOUWeA.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccuOUWeA.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccuOUWeA.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccuOUWeA.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccuOUWeA.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccuOUWeA.s:12     .text:0000000000000000 timerDealyMS
+     /tmp/ccuOUWeA.s:74     .text.startup:0000000000000000 main
+
+UNDEFINED SYMBOLS
+__umulhisi3

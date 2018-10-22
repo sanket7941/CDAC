@@ -3,40 +3,40 @@ main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000120  00000000  00000000  00000094  2**1
+  0 .text         00000138  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000000  00800060  00000120  000001b4  2**0
+  1 .data         00000000  00800060  00000138  000001cc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000002  00800060  00800060  000001b4  2**0
+  2 .bss          00000002  00800060  00800060  000001cc  2**0
                   ALLOC
-  3 .comment      00000011  00000000  00000000  000001b4  2**0
+  3 .comment      00000011  00000000  00000000  000001cc  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001c8  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001e0  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000068  00000000  00000000  00000208  2**3
+  5 .debug_aranges 00000068  00000000  00000000  00000220  2**3
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000888  00000000  00000000  00000270  2**0
+  6 .debug_info   000008ab  00000000  00000000  00000288  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000006e5  00000000  00000000  00000af8  2**0
+  7 .debug_abbrev 0000071c  00000000  00000000  00000b33  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000045d  00000000  00000000  000011dd  2**0
+  8 .debug_line   0000051b  00000000  00000000  0000124f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000074  00000000  00000000  0000163c  2**2
+  9 .debug_frame  00000088  00000000  00000000  0000176c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000003ae  00000000  00000000  000016b0  2**0
+ 10 .debug_str    000003b5  00000000  00000000  000017f4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000047  00000000  00000000  00001a5e  2**0
+ 11 .debug_loc    000000dc  00000000  00000000  00001ba9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000018  00000000  00000000  00001aa5  2**0
+ 12 .debug_ranges 00000030  00000000  00000000  00001c85  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
 
 00000000 <__vectors>:
    0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
-   4:	0c 94 64 00 	jmp	0xc8	; 0xc8 <__vector_1>
+   4:	0c 94 70 00 	jmp	0xe0	; 0xe0 <__vector_1>
    8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
-   c:	0c 94 6a 00 	jmp	0xd4	; 0xd4 <__vector_3>
+   c:	0c 94 76 00 	jmp	0xec	; 0xec <__vector_3>
   10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
   14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
   18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
@@ -76,8 +76,8 @@ Disassembly of section .text:
   6a:	a2 36       	cpi	r26, 0x62	; 98
   6c:	b2 07       	cpc	r27, r18
   6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
-  70:	0e 94 70 00 	call	0xe0	; 0xe0 <main>
-  74:	0c 94 8e 00 	jmp	0x11c	; 0x11c <_exit>
+  70:	0e 94 7c 00 	call	0xf8	; 0xf8 <main>
+  74:	0c 94 9a 00 	jmp	0x134	; 0x134 <_exit>
 
 00000078 <__bad_interrupt>:
   78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -135,7 +135,7 @@ void init(void)
   a2:	08 95       	ret
 
 000000a4 <delay_s>:
-	BUZZER_PORT &= ~BV(BUZZER);
+
 }
 
 void delay_s(uint8_t s)
@@ -143,7 +143,7 @@ void delay_s(uint8_t s)
 	while(s--)
   a4:	81 50       	subi	r24, 0x01	; 1
   a6:	08 f4       	brcc	.+2      	; 0xaa <delay_s+0x6>
-		_delay_ms(1000);
+		_delay_ms(50);
 }
   a8:	08 95       	ret
 	#else
@@ -152,9 +152,9 @@ void delay_s(uint8_t s)
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-  aa:	2f ef       	ldi	r18, 0xFF	; 255
-  ac:	39 e6       	ldi	r19, 0x69	; 105
-  ae:	98 e1       	ldi	r25, 0x18	; 24
+  aa:	2f e7       	ldi	r18, 0x7F	; 127
+  ac:	38 e3       	ldi	r19, 0x38	; 56
+  ae:	91 e0       	ldi	r25, 0x01	; 1
   b0:	21 50       	subi	r18, 0x01	; 1
   b2:	30 40       	sbci	r19, 0x00	; 0
   b4:	90 40       	sbci	r25, 0x00	; 0
@@ -164,73 +164,87 @@ void delay_s(uint8_t s)
   bc:	f3 cf       	rjmp	.-26     	; 0xa4 <delay_s>
 
 000000be <beep>:
-	BUZZER_PORT |= BV(BUZZER);
-  be:	93 9a       	sbi	0x12, 3	; 18
-	delay_s(s);
-  c0:	0e 94 52 00 	call	0xa4	; 0xa4 <delay_s>
-	BUZZER_PORT &= ~BV(BUZZER);
-  c4:	93 98       	cbi	0x12, 3	; 18
+{
+  be:	1f 93       	push	r17
+  c0:	cf 93       	push	r28
+  c2:	df 93       	push	r29
+  c4:	18 2f       	mov	r17, r24
+  c6:	c2 e3       	ldi	r28, 0x32	; 50
+  c8:	d0 e0       	ldi	r29, 0x00	; 0
+		BUZZER_PORT |= BV(BUZZER);
+  ca:	93 9a       	sbi	0x12, 3	; 18
+		delay_s(s);
+  cc:	81 2f       	mov	r24, r17
+  ce:	0e 94 52 00 	call	0xa4	; 0xa4 <delay_s>
+		BUZZER_PORT &= ~BV(BUZZER);
+  d2:	93 98       	cbi	0x12, 3	; 18
+  d4:	21 97       	sbiw	r28, 0x01	; 1
+	for (size_t i = 0; i < 50; i++) {
+  d6:	c9 f7       	brne	.-14     	; 0xca <beep+0xc>
 }
-  c6:	08 95       	ret
+  d8:	df 91       	pop	r29
+  da:	cf 91       	pop	r28
+  dc:	1f 91       	pop	r17
+  de:	08 95       	ret
 
-000000c8 <__vector_1>:
+000000e0 <__vector_1>:
 
 ISR(INT0_vect)
 {
-  c8:	8f 93       	push	r24
+  e0:	8f 93       	push	r24
 	intr0_flag = 1;
-  ca:	81 e0       	ldi	r24, 0x01	; 1
-  cc:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <intr0_flag>
+  e2:	81 e0       	ldi	r24, 0x01	; 1
+  e4:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <intr0_flag>
 }
-  d0:	8f 91       	pop	r24
-  d2:	18 95       	reti
+  e8:	8f 91       	pop	r24
+  ea:	18 95       	reti
 
-000000d4 <__vector_3>:
+000000ec <__vector_3>:
 
 ISR(INT2_vect)
 {
-  d4:	8f 93       	push	r24
+  ec:	8f 93       	push	r24
 	intr2_flag = 1;
-  d6:	81 e0       	ldi	r24, 0x01	; 1
-  d8:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+  ee:	81 e0       	ldi	r24, 0x01	; 1
+  f0:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
 }
-  dc:	8f 91       	pop	r24
-  de:	18 95       	reti
+  f4:	8f 91       	pop	r24
+  f6:	18 95       	reti
 
-000000e0 <main>:
+000000f8 <main>:
 	init();
-  e0:	0e 94 3e 00 	call	0x7c	; 0x7c <init>
+  f8:	0e 94 3e 00 	call	0x7c	; 0x7c <init>
 		if(intr0_flag)
-  e4:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <intr0_flag>
-  e8:	88 23       	and	r24, r24
-  ea:	29 f0       	breq	.+10     	; 0xf6 <main+0x16>
-			beep(1);
-  ec:	81 e0       	ldi	r24, 0x01	; 1
-  ee:	0e 94 5f 00 	call	0xbe	; 0xbe <beep>
+  fc:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <intr0_flag>
+ 100:	88 23       	and	r24, r24
+ 102:	29 f0       	breq	.+10     	; 0x10e <main+0x16>
+			beep(10);
+ 104:	8a e0       	ldi	r24, 0x0A	; 10
+ 106:	0e 94 5f 00 	call	0xbe	; 0xbe <beep>
 			intr0_flag = 0;
-  f2:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <intr0_flag>
+ 10a:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <intr0_flag>
 		if(intr2_flag)
-  f6:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
-  fa:	88 23       	and	r24, r24
-  fc:	29 f0       	breq	.+10     	; 0x108 <main+0x28>
-			beep(1);
-  fe:	81 e0       	ldi	r24, 0x01	; 1
- 100:	0e 94 5f 00 	call	0xbe	; 0xbe <beep>
+ 10e:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
+ 112:	88 23       	and	r24, r24
+ 114:	29 f0       	breq	.+10     	; 0x120 <main+0x28>
+			beep(10);
+ 116:	8a e0       	ldi	r24, 0x0A	; 10
+ 118:	0e 94 5f 00 	call	0xbe	; 0xbe <beep>
 			intr2_flag = 0;
- 104:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
- 108:	2f ef       	ldi	r18, 0xFF	; 255
- 10a:	81 ee       	ldi	r24, 0xE1	; 225
- 10c:	94 e0       	ldi	r25, 0x04	; 4
- 10e:	21 50       	subi	r18, 0x01	; 1
- 110:	80 40       	sbci	r24, 0x00	; 0
- 112:	90 40       	sbci	r25, 0x00	; 0
- 114:	e1 f7       	brne	.-8      	; 0x10e <main+0x2e>
- 116:	00 c0       	rjmp	.+0      	; 0x118 <main+0x38>
- 118:	00 00       	nop
- 11a:	e4 cf       	rjmp	.-56     	; 0xe4 <main+0x4>
+ 11c:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
+ 120:	2f ef       	ldi	r18, 0xFF	; 255
+ 122:	81 ee       	ldi	r24, 0xE1	; 225
+ 124:	94 e0       	ldi	r25, 0x04	; 4
+ 126:	21 50       	subi	r18, 0x01	; 1
+ 128:	80 40       	sbci	r24, 0x00	; 0
+ 12a:	90 40       	sbci	r25, 0x00	; 0
+ 12c:	e1 f7       	brne	.-8      	; 0x126 <main+0x2e>
+ 12e:	00 c0       	rjmp	.+0      	; 0x130 <main+0x38>
+ 130:	00 00       	nop
+ 132:	e4 cf       	rjmp	.-56     	; 0xfc <main+0x4>
 
-0000011c <_exit>:
- 11c:	f8 94       	cli
+00000134 <_exit>:
+ 134:	f8 94       	cli
 
-0000011e <__stop_program>:
- 11e:	ff cf       	rjmp	.-2      	; 0x11e <__stop_program>
+00000136 <__stop_program>:
+ 136:	ff cf       	rjmp	.-2      	; 0x136 <__stop_program>

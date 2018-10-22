@@ -2,8 +2,8 @@ Archive member included to satisfy reference by file (symbol)
 
 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
                               /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o (exit)
-/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
-                              main.o (__do_clear_bss)
+/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                              main.o (__umulhisi3)
 
 Memory Configuration
 
@@ -126,7 +126,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000      0x138
+.text           0x0000000000000000       0xd4
  *(.vectors)
  .vectors       0x0000000000000000       0x54 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
                 0x0000000000000000                __vectors
@@ -165,8 +165,6 @@ END GROUP
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x0000000000000060       0x10 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
-                0x0000000000000060                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -177,72 +175,71 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x0000000000000070        0x8 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+ .init9         0x0000000000000060        0x8 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
  *(.init9)
  *(.text)
- .text          0x0000000000000078        0x4 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
-                0x0000000000000078                __vector_12
-                0x0000000000000078                __bad_interrupt
-                0x0000000000000078                __vector_6
-                0x0000000000000078                __vector_11
-                0x0000000000000078                __vector_13
-                0x0000000000000078                __vector_17
-                0x0000000000000078                __vector_19
-                0x0000000000000078                __vector_7
-                0x0000000000000078                __vector_5
-                0x0000000000000078                __vector_4
-                0x0000000000000078                __vector_9
-                0x0000000000000078                __vector_2
-                0x0000000000000078                __vector_15
-                0x0000000000000078                __vector_8
-                0x0000000000000078                __vector_14
-                0x0000000000000078                __vector_10
-                0x0000000000000078                __vector_16
-                0x0000000000000078                __vector_18
-                0x0000000000000078                __vector_20
- .text          0x000000000000007c       0x7c main.o
-                0x000000000000007c                init
-                0x00000000000000a4                delay_s
-                0x00000000000000be                beep
-                0x00000000000000e0                __vector_1
-                0x00000000000000ec                __vector_3
- .text          0x00000000000000f8        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .text          0x00000000000000f8        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
-                0x00000000000000f8                . = ALIGN (0x2)
+ .text          0x0000000000000068        0x4 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+                0x0000000000000068                __vector_1
+                0x0000000000000068                __vector_12
+                0x0000000000000068                __bad_interrupt
+                0x0000000000000068                __vector_6
+                0x0000000000000068                __vector_3
+                0x0000000000000068                __vector_11
+                0x0000000000000068                __vector_13
+                0x0000000000000068                __vector_17
+                0x0000000000000068                __vector_19
+                0x0000000000000068                __vector_7
+                0x0000000000000068                __vector_5
+                0x0000000000000068                __vector_4
+                0x0000000000000068                __vector_9
+                0x0000000000000068                __vector_2
+                0x0000000000000068                __vector_15
+                0x0000000000000068                __vector_8
+                0x0000000000000068                __vector_14
+                0x0000000000000068                __vector_10
+                0x0000000000000068                __vector_16
+                0x0000000000000068                __vector_18
+                0x0000000000000068                __vector_20
+ .text          0x000000000000006c       0x32 main.o
+                0x000000000000006c                timerDealyMS
+ .text          0x000000000000009e        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .text          0x000000000000009e        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x000000000000009e                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x00000000000000f8       0x3c main.o
-                0x00000000000000f8                main
+ .text.startup  0x000000000000009e       0x14 main.o
+                0x000000000000009e                main
  .text.libgcc.mul
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000b2        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.div
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000b2        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x00000000000000b2        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000b2        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000b2        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000b2        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000b2        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .text.libgcc.mul
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x00000000000000b2       0x1e /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x00000000000000b2                __umulhisi3
  .text.libgcc.div
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc   0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x00000000000000d0        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+ .text.libgcc   0x00000000000000d0        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.prologue
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x00000000000000d0        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.builtins
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x00000000000000d0        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.fmul
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x00000000000000d0        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  .text.libgcc.fixed
-                0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
-                0x0000000000000134                . = ALIGN (0x2)
+                0x00000000000000d0        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                0x00000000000000d0                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000000134        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
-                0x0000000000000134                exit
-                0x0000000000000134                _exit
+ .fini9         0x00000000000000d0        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+                0x00000000000000d0                exit
+                0x00000000000000d0                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -261,23 +258,23 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000000134        0x4 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .fini0         0x00000000000000d0        0x4 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  *(.fini0)
  *(.hightext)
  *(.hightext*)
  *(.progmemx.*)
-                0x0000000000000138                . = ALIGN (0x2)
+                0x00000000000000d4                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
-                0x0000000000000138                _etext = .
+                0x00000000000000d4                _etext = .
 
-.data           0x0000000000800060        0x0 load address 0x0000000000000138
+.data           0x0000000000800060        0x0 load address 0x00000000000000d4
                 [!provide]                        PROVIDE (__data_start = .)
  *(.data)
  .data          0x0000000000800060        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
  .data          0x0000000000800060        0x0 main.o
  .data          0x0000000000800060        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .data          0x0000000000800060        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .data          0x0000000000800060        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  *(.data*)
  *(.gnu.linkonce.d*)
  *(.rodata)
@@ -287,26 +284,24 @@ END GROUP
                 0x0000000000800060                _edata = .
                 [!provide]                        PROVIDE (__data_end = .)
 
-.bss            0x0000000000800060        0x2
-                0x0000000000800060                PROVIDE (__bss_start = .)
+.bss            0x0000000000800060        0x0
+                [!provide]                        PROVIDE (__bss_start = .)
  *(.bss)
  .bss           0x0000000000800060        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
- .bss           0x0000000000800060        0x2 main.o
-                0x0000000000800060                intr2_flag
-                0x0000000000800061                intr0_flag
- .bss           0x0000000000800062        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .bss           0x0000000000800062        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000800060        0x0 main.o
+ .bss           0x0000000000800060        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .bss           0x0000000000800060        0x0 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
  *(.bss*)
  *(COMMON)
-                0x0000000000800062                PROVIDE (__bss_end = .)
-                0x0000000000000138                __data_load_start = LOADADDR (.data)
-                0x0000000000000138                __data_load_end = (__data_load_start + SIZEOF (.data))
+                [!provide]                        PROVIDE (__bss_end = .)
+                0x00000000000000d4                __data_load_start = LOADADDR (.data)
+                0x00000000000000d4                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0000000000800062        0x0
+.noinit         0x0000000000800060        0x0
                 [!provide]                        PROVIDE (__noinit_start = .)
  *(.noinit*)
                 [!provide]                        PROVIDE (__noinit_end = .)
-                0x0000000000800062                _end = .
+                0x0000000000800060                _end = .
                 [!provide]                        PROVIDE (__heap_start = .)
 
 .eeprom         0x0000000000810000        0x0
@@ -375,47 +370,47 @@ END GROUP
  .debug_aranges
                 0x0000000000000028       0x20 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
  .debug_aranges
-                0x0000000000000048       0x20 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000000048       0x20 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000      0x8ab
+.debug_info     0x0000000000000000      0x635
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000      0x4e6 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
- .debug_info    0x00000000000004e6      0x379 main.o
- .debug_info    0x000000000000085f       0x26 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .debug_info    0x0000000000000885       0x26 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .debug_info    0x00000000000004e6      0x103 main.o
+ .debug_info    0x00000000000005e9       0x26 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .debug_info    0x000000000000060f       0x26 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
 
-.debug_abbrev   0x0000000000000000      0x71c
+.debug_abbrev   0x0000000000000000      0x591
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x4a3 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
- .debug_abbrev  0x00000000000004a3      0x251 main.o
- .debug_abbrev  0x00000000000006f4       0x14 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .debug_abbrev  0x0000000000000708       0x14 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .debug_abbrev  0x00000000000004a3       0xc6 main.o
+ .debug_abbrev  0x0000000000000569       0x14 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .debug_abbrev  0x000000000000057d       0x14 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
 
-.debug_line     0x0000000000000000      0x51b
+.debug_line     0x0000000000000000      0x2d8
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x0000000000000000       0x1d /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
- .debug_line    0x000000000000001d      0x418 main.o
- .debug_line    0x0000000000000435       0x61 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .debug_line    0x0000000000000496       0x85 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .debug_line    0x000000000000001d      0x1ab main.o
+ .debug_line    0x00000000000001c8       0x61 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .debug_line    0x0000000000000229       0xaf /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
 
-.debug_frame    0x0000000000000000       0x88
+.debug_frame    0x0000000000000000       0x34
  *(.debug_frame)
- .debug_frame   0x0000000000000000       0x88 main.o
+ .debug_frame   0x0000000000000000       0x34 main.o
 
-.debug_str      0x0000000000000000      0x3b5
+.debug_str      0x0000000000000000      0x32e
  *(.debug_str)
  .debug_str     0x0000000000000000      0x196 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
- .debug_str     0x0000000000000196      0x1bf main.o
-                                        0x1f8 (size before relaxing)
- .debug_str     0x0000000000000355       0x60 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
- .debug_str     0x00000000000003b5       0x60 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
+ .debug_str     0x0000000000000196      0x138 main.o
+                                        0x16c (size before relaxing)
+ .debug_str     0x00000000000002ce       0x60 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
+ .debug_str     0x000000000000032e       0x60 /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
 
-.debug_loc      0x0000000000000000       0xdc
+.debug_loc      0x0000000000000000       0x89
  *(.debug_loc)
- .debug_loc     0x0000000000000000       0xdc main.o
+ .debug_loc     0x0000000000000000       0x89 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -435,9 +430,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x0000000000000000       0x30
+.debug_ranges   0x0000000000000000       0x18
  *(.debug_ranges)
- .debug_ranges  0x0000000000000000       0x30 main.o
+ .debug_ranges  0x0000000000000000       0x18 main.o
 
 .debug_macro
  *(.debug_macro)
@@ -451,15 +446,12 @@ Cross Reference Table
 
 Symbol                                            File
 __bad_interrupt                                   /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
-__bss_end                                         /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
-__bss_start                                       /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
-__do_clear_bss                                    /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_clear_bss.o)
-                                                  main.o
 __heap_end                                        /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __init                                            /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __stack                                           /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
-__vector_1                                        main.o
-                                                  /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+__umulhisi3                                       /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_umulhisi3.o)
+                                                  main.o
+__vector_1                                        /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_10                                       /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_11                                       /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_12                                       /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
@@ -472,8 +464,7 @@ __vector_18                                       /home/sunbeam/D_day/AVR/softwa
 __vector_19                                       /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_2                                        /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_20                                       /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
-__vector_3                                        main.o
-                                                  /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+__vector_3                                        /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_4                                        /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_5                                        /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vector_6                                        /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
@@ -483,12 +474,8 @@ __vector_9                                        /home/sunbeam/D_day/AVR/softwa
 __vector_default                                  /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 __vectors                                         /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
 _exit                                             /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
-beep                                              main.o
-delay_s                                           main.o
 exit                                              /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/avr5/libgcc.a(_exit.o)
                                                   /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
-init                                              main.o
-intr0_flag                                        main.o
-intr2_flag                                        main.o
 main                                              main.o
                                                   /home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/bin/../lib/gcc/avr/8.2.0/../../../../avr/lib/avr5/crtatmega32.o
+timerDealyMS                                      main.o

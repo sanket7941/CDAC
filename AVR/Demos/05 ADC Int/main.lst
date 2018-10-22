@@ -7,193 +7,69 @@
    7               		.text
    8               	.Ltext0:
    9               		.cfi_sections	.debug_frame
-  10               	.global	init
-  12               	init:
-  13               	.LFB8:
-  14               		.file 1 "main.c"
-   1:main.c        **** /* ExINT with buzzer
-   2:main.c        ****       Buzz PD3
-   3:main.c        ****       INT  PD2
-   4:main.c        **** */
-   5:main.c        **** 
-   6:main.c        **** #include <avr/io.h>
-   7:main.c        **** #include <avr/interrupt.h>
-   8:main.c        **** #include <util/delay.h>
-   9:main.c        **** #include <stdio.h>
-  10:main.c        **** 
-  11:main.c        **** #define BV(bit)	(1<<(bit))
-  12:main.c        **** 
-  13:main.c        **** #define BUZZER_PORT		PORTD
-  14:main.c        **** #define BUZZER_DDR		DDRD
-  15:main.c        **** #define BUZZER_PIN		PIND
-  16:main.c        **** 
-  17:main.c        **** #define INTR0_PORT		PORTD
-  18:main.c        **** #define INTR0_DDR			DDRD
-  19:main.c        **** 
-  20:main.c        **** #define INTR2_PORT		PORTD
-  21:main.c        **** #define INTR2_DDR		DDRB
-  22:main.c        **** 
-  23:main.c        **** #define BUZZER			3
-  24:main.c        **** #define EINT0			2
-  25:main.c        **** #define EINT2			2
-  26:main.c        **** 
-  27:main.c        **** volatile uint8_t intr0_flag=0, intr2_flag=0;
-  28:main.c        **** 
-  29:main.c        **** void init(void);
-  30:main.c        **** void beep(uint8_t s);
-  31:main.c        **** void delay_s(uint8_t s);
-  32:main.c        **** 
-  33:main.c        **** int main(void)
-  34:main.c        **** {
-  35:main.c        **** 	init();
-  36:main.c        **** 	while(1)
-  37:main.c        **** 	{
-  38:main.c        **** 		if(intr0_flag)
-  39:main.c        **** 		{
-  40:main.c        **** 			beep(10);
-  41:main.c        **** 			intr0_flag = 0;
-  42:main.c        **** 		}
-  43:main.c        **** 		if(intr2_flag)
-  44:main.c        **** 		{
-  45:main.c        **** 			beep(10);
-  46:main.c        **** 			intr2_flag = 0;
-  47:main.c        **** 		}
-  48:main.c        **** 		_delay_ms(200);
-  49:main.c        **** 	}
-  50:main.c        **** 	return 0;
-  51:main.c        **** }
-  52:main.c        **** 
-  53:main.c        **** void init(void)
-  54:main.c        **** {
-  15               		.loc 1 54 1 view -0
-  16               		.cfi_startproc
-  17               	/* prologue: function */
-  18               	/* frame size = 0 */
-  19               	/* stack size = 0 */
-  20               	.L__stack_usage = 0
-  55:main.c        **** 	// set buzzer pin as output
-  56:main.c        **** 	BUZZER_DDR |= BV(BUZZER);
-  21               		.loc 1 56 2 view .LVU1
-  22               		.loc 1 56 13 is_stmt 0 view .LVU2
-  23 0000 8B9A      		sbi 0x11,3
-  57:main.c        **** 	// turn off the buzzer
-  58:main.c        **** 	BUZZER_PORT &= ~BV(BUZZER);
-  24               		.loc 1 58 2 is_stmt 1 view .LVU3
-  25               		.loc 1 58 14 is_stmt 0 view .LVU4
-  26 0002 9398      		cbi 0x12,3
-  59:main.c        **** 
-  60:main.c        **** 	// set int0 pin as input
-  61:main.c        **** 	INTR0_DDR &= ~BV(EINT0);
-  27               		.loc 1 61 2 is_stmt 1 view .LVU5
-  28               		.loc 1 61 12 is_stmt 0 view .LVU6
-  29 0004 8A98      		cbi 0x11,2
-  62:main.c        **** 	// write 1 on intr pin - activate pull up
-  63:main.c        **** 	INTR0_PORT |= BV(EINT0);
-  30               		.loc 1 63 2 is_stmt 1 view .LVU7
-  31               		.loc 1 63 13 is_stmt 0 view .LVU8
-  32 0006 929A      		sbi 0x12,2
-  64:main.c        **** 	// configure int0 for falling edge
-  65:main.c        **** 	MCUCR |=  BV(ISC01);
-  33               		.loc 1 65 2 is_stmt 1 view .LVU9
-  34               		.loc 1 65 8 is_stmt 0 view .LVU10
-  35 0008 85B7      		in r24,0x35
-  36 000a 8260      		ori r24,lo8(2)
-  37 000c 85BF      		out 0x35,r24
-  66:main.c        **** 	// enable int0 intrrupt
-  67:main.c        **** 	GICR |= BV(INT0);
-  38               		.loc 1 67 2 is_stmt 1 view .LVU11
-  39               		.loc 1 67 7 is_stmt 0 view .LVU12
-  40 000e 8BB7      		in r24,0x3b
-  41 0010 8064      		ori r24,lo8(64)
-  42 0012 8BBF      		out 0x3b,r24
-  68:main.c        **** 
-  69:main.c        **** 	// set int2 pin as input
-  70:main.c        **** 	INTR2_DDR &= ~BV(EINT2);
-  43               		.loc 1 70 2 is_stmt 1 view .LVU13
-  44               		.loc 1 70 12 is_stmt 0 view .LVU14
-  45 0014 BA98      		cbi 0x17,2
-  71:main.c        **** 	// write 1 on intr pin - activate pull up
-  72:main.c        **** 	INTR2_PORT |= BV(EINT2);
-  46               		.loc 1 72 2 is_stmt 1 view .LVU15
-  47               		.loc 1 72 13 is_stmt 0 view .LVU16
-  48 0016 929A      		sbi 0x12,2
-  73:main.c        **** 	// configure int2 for rising edge
-  74:main.c        **** 	MCUCSR |=  BV(ISC2);
-  49               		.loc 1 74 2 is_stmt 1 view .LVU17
-  50               		.loc 1 74 9 is_stmt 0 view .LVU18
-  51 0018 84B7      		in r24,0x34
-  52 001a 8064      		ori r24,lo8(64)
-  53 001c 84BF      		out 0x34,r24
-  75:main.c        **** 	// enable int2 intrrupt
-  76:main.c        **** 	GICR |= BV(INT2);
-  54               		.loc 1 76 2 is_stmt 1 view .LVU19
-  55               		.loc 1 76 7 is_stmt 0 view .LVU20
-  56 001e 8BB7      		in r24,0x3b
-  57 0020 8062      		ori r24,lo8(32)
-  58 0022 8BBF      		out 0x3b,r24
-  77:main.c        **** 
-  78:main.c        **** 	// enable global intrrupt
-  79:main.c        **** 	sei();
-  59               		.loc 1 79 2 is_stmt 1 view .LVU21
-  60               	/* #APP */
-  61               	 ;  79 "main.c" 1
-  62 0024 7894      		sei
-  63               	 ;  0 "" 2
-  64               	/* #NOAPP */
-  65               	/* epilogue start */
-  80:main.c        **** }
-  66               		.loc 1 80 1 is_stmt 0 view .LVU22
-  67 0026 0895      		ret
-  68               		.cfi_endproc
-  69               	.LFE8:
-  71               	.global	delay_s
-  73               	delay_s:
-  74               	.LVL0:
-  75               	.LFB10:
-  81:main.c        **** 
-  82:main.c        **** void beep(uint8_t s)
-  83:main.c        **** {
-  84:main.c        **** 	for (size_t i = 0; i < 50; i++) {
-  85:main.c        **** 
-  86:main.c        **** 		// turn on the buzzer
-  87:main.c        **** 		BUZZER_PORT |= BV(BUZZER);
-  88:main.c        **** 
-  89:main.c        **** 		// delay of given sec
-  90:main.c        **** 		delay_s(s);
-  91:main.c        **** 
-  92:main.c        **** 		// turn off the buzzer
-  93:main.c        **** 		BUZZER_PORT &= ~BV(BUZZER);
-  94:main.c        **** 	}
-  95:main.c        **** 
-  96:main.c        **** }
-  97:main.c        **** 
-  98:main.c        **** void delay_s(uint8_t s)
-  99:main.c        **** {
-  76               		.loc 1 99 1 is_stmt 1 view -0
-  77               		.cfi_startproc
-  78               	/* prologue: function */
-  79               	/* frame size = 0 */
-  80               	/* stack size = 0 */
-  81               	.L__stack_usage = 0
- 100:main.c        **** 	while(s--)
-  82               		.loc 1 100 2 view .LVU24
-  83               	.L3:
-  84               		.loc 1 100 9 is_stmt 0 view .LVU25
-  85               	.LVL1:
-  86 0028 8150      		subi r24,1
-  87 002a 00F4      		brcc .L4
-  88               	/* epilogue start */
- 101:main.c        **** 		_delay_ms(50);
- 102:main.c        **** }
-  89               		.loc 1 102 1 view .LVU26
-  90 002c 0895      		ret
-  91               	.L4:
- 101:main.c        **** 		_delay_ms(50);
-  92               		.loc 1 101 3 is_stmt 1 view .LVU27
-  93               	.LVL2:
-  94               	.LBB6:
-  95               	.LBI6:
-  96               		.file 2 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h"
+  10               		.section	.rodata.str1.1,"aMS",@progbits,1
+  11               	.LC0:
+  12 0000 6164 6320 		.string	"adc val: %04d"
+  12      7661 6C3A 
+  12      2025 3034 
+  12      6400 
+  13               	.LC1:
+  14 000e 6164 6320 		.string	"adc intr (%02d)"
+  14      696E 7472 
+  14      2028 2530 
+  14      3264 2900 
+  15               		.section	.text.startup,"ax",@progbits
+  16               	.global	main
+  18               	main:
+  19               	.LFB7:
+  20               		.file 1 "main.c"
+   1:main.c        **** #include <stdio.h>
+   2:main.c        **** #include <avr/io.h>
+   3:main.c        **** #include <util/delay.h>
+   4:main.c        **** #include "lcd.h"
+   5:main.c        **** #include "adc_intr.h"
+   6:main.c        **** 
+   7:main.c        **** int main(void)
+   8:main.c        **** {
+  21               		.loc 1 8 1 view -0
+  22               		.cfi_startproc
+  23 0000 CDB7      		in r28,__SP_L__
+  24 0002 DEB7      		in r29,__SP_H__
+  25               	.LCFI0:
+  26               		.cfi_def_cfa_register 28
+  27 0004 A897      		sbiw r28,40
+  28               	.LCFI1:
+  29               		.cfi_def_cfa_offset 42
+  30 0006 0FB6      		in __tmp_reg__,__SREG__
+  31 0008 F894      		cli
+  32 000a DEBF      		out __SP_H__,r29
+  33 000c 0FBE      		out __SREG__,__tmp_reg__
+  34 000e CDBF      		out __SP_L__,r28
+  35               	/* prologue: function */
+  36               	/* frame size = 40 */
+  37               	/* stack size = 40 */
+  38               	.L__stack_usage = 40
+   9:main.c        **** 	char str[20], cnt_str[20];
+  39               		.loc 1 9 2 view .LVU1
+  10:main.c        **** 	int16_t cnt = 0;
+  40               		.loc 1 10 2 view .LVU2
+  41               	.LVL0:
+  11:main.c        **** 	lcd_init();
+  42               		.loc 1 11 2 view .LVU3
+  43 0010 0E94 0000 		call lcd_init
+  44               	.LVL1:
+  12:main.c        **** 	adc_init();
+  45               		.loc 1 12 2 view .LVU4
+  46 0014 0E94 0000 		call adc_init
+  47               	.LVL2:
+  13:main.c        **** 
+  14:main.c        **** 	// lcd_putstring(0,"yee ganeeesh");
+  15:main.c        **** 
+  16:main.c        **** 	_delay_ms(5000);
+  48               		.loc 1 16 2 view .LVU5
+  49               	.LBB6:
+  50               	.LBI6:
+  51               		.file 2 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h"
    1:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
    2:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
    3:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
@@ -360,20 +236,20 @@
  164:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****  */
  165:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** void
  166:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** _delay_ms(double __ms)
-  97               		.loc 2 166 1 view .LVU28
-  98               	.LBB7:
+  52               		.loc 2 166 1 view .LVU6
+  53               	.LBB7:
  167:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** {
  168:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	double __tmp ;
-  99               		.loc 2 168 2 view .LVU29
+  54               		.loc 2 168 2 view .LVU7
  169:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
  170:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
  171:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h ****   __STDC_HOSTED__
  172:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
- 100               		.loc 2 172 2 view .LVU30
+  55               		.loc 2 172 2 view .LVU8
  173:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
- 101               		.loc 2 173 2 view .LVU31
+  56               		.loc 2 173 2 view .LVU9
  174:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
- 102               		.loc 2 174 2 view .LVU32
+  57               		.loc 2 174 2 view .LVU10
  175:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
  176:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
  177:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
@@ -384,279 +260,200 @@
  182:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#else
  183:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 		//round up by default
  184:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
- 103               		.loc 2 184 3 view .LVU33
+  58               		.loc 2 184 3 view .LVU11
  185:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#endif
  186:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
  187:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
- 104               		.loc 2 187 2 view .LVU34
- 105 002e 2FE7      		ldi r18,lo8(79999)
- 106 0030 38E3      		ldi r19,hi8(79999)
- 107 0032 91E0      		ldi r25,hlo8(79999)
- 108 0034 2150      	1:	subi r18,1
- 109 0036 3040      		sbci r19,0
- 110 0038 9040      		sbci r25,0
- 111 003a 01F4      		brne 1b
- 112 003c 00C0      		rjmp .
- 113 003e 0000      		nop
- 114 0040 00C0      		rjmp .L3
- 115               	.LBE7:
- 116               	.LBE6:
- 117               		.cfi_endproc
- 118               	.LFE10:
- 120               	.global	beep
- 122               	beep:
- 123               	.LVL3:
- 124               	.LFB9:
-  83:main.c        **** 	for (size_t i = 0; i < 50; i++) {
- 125               		.loc 1 83 1 view -0
- 126               		.cfi_startproc
-  83:main.c        **** 	for (size_t i = 0; i < 50; i++) {
- 127               		.loc 1 83 1 is_stmt 0 view .LVU36
- 128 0042 1F93      		push r17
- 129               	.LCFI0:
- 130               		.cfi_def_cfa_offset 3
- 131               		.cfi_offset 17, -2
- 132 0044 CF93      		push r28
- 133               	.LCFI1:
- 134               		.cfi_def_cfa_offset 4
- 135               		.cfi_offset 28, -3
- 136 0046 DF93      		push r29
- 137               	.LCFI2:
- 138               		.cfi_def_cfa_offset 5
- 139               		.cfi_offset 29, -4
- 140               	/* prologue: function */
- 141               	/* frame size = 0 */
- 142               	/* stack size = 3 */
- 143               	.L__stack_usage = 3
- 144 0048 182F      		mov r17,r24
-  84:main.c        **** 
- 145               		.loc 1 84 2 is_stmt 1 view .LVU37
- 146               	.LBB8:
-  84:main.c        **** 
- 147               		.loc 1 84 7 view .LVU38
- 148               	.LVL4:
-  84:main.c        **** 
- 149               		.loc 1 84 7 is_stmt 0 view .LVU39
- 150               	.LBE8:
-  83:main.c        **** 	for (size_t i = 0; i < 50; i++) {
- 151               		.loc 1 83 1 view .LVU40
- 152 004a C2E3      		ldi r28,lo8(50)
- 153 004c D0E0      		ldi r29,0
- 154               	.LVL5:
- 155               	.L6:
- 156               	.LBB9:
-  87:main.c        **** 
- 157               		.loc 1 87 3 is_stmt 1 discriminator 3 view .LVU41
-  87:main.c        **** 
- 158               		.loc 1 87 15 is_stmt 0 discriminator 3 view .LVU42
- 159 004e 939A      		sbi 0x12,3
-  90:main.c        **** 
- 160               		.loc 1 90 3 is_stmt 1 discriminator 3 view .LVU43
- 161 0050 812F      		mov r24,r17
- 162 0052 0E94 0000 		call delay_s
- 163               	.LVL6:
-  93:main.c        **** 	}
- 164               		.loc 1 93 3 discriminator 3 view .LVU44
-  93:main.c        **** 	}
- 165               		.loc 1 93 15 is_stmt 0 discriminator 3 view .LVU45
- 166 0056 9398      		cbi 0x12,3
- 167               	.LVL7:
-  93:main.c        **** 	}
- 168               		.loc 1 93 15 discriminator 3 view .LVU46
- 169 0058 2197      		sbiw r28,1
- 170               	.LVL8:
-  84:main.c        **** 
- 171               		.loc 1 84 2 discriminator 3 view .LVU47
- 172 005a 01F4      		brne .L6
- 173               	/* epilogue start */
- 174               	.LBE9:
-  96:main.c        **** 
- 175               		.loc 1 96 1 view .LVU48
- 176 005c DF91      		pop r29
- 177 005e CF91      		pop r28
- 178               	.LVL9:
-  96:main.c        **** 
- 179               		.loc 1 96 1 view .LVU49
- 180 0060 1F91      		pop r17
- 181               	.LVL10:
-  96:main.c        **** 
- 182               		.loc 1 96 1 view .LVU50
- 183 0062 0895      		ret
- 184               		.cfi_endproc
- 185               	.LFE9:
- 187               		.section	.text.startup,"ax",@progbits
- 188               	.global	main
- 190               	main:
- 191               	.LFB7:
-  34:main.c        **** 	init();
- 192               		.loc 1 34 1 is_stmt 1 view -0
- 193               		.cfi_startproc
- 194               	/* prologue: function */
- 195               	/* frame size = 0 */
- 196               	/* stack size = 0 */
- 197               	.L__stack_usage = 0
-  35:main.c        **** 	while(1)
- 198               		.loc 1 35 2 view .LVU52
- 199 0000 0E94 0000 		call init
- 200               	.LVL11:
- 201               	.L11:
-  36:main.c        **** 	{
- 202               		.loc 1 36 2 view .LVU53
-  38:main.c        **** 		{
- 203               		.loc 1 38 3 view .LVU54
-  38:main.c        **** 		{
- 204               		.loc 1 38 6 is_stmt 0 view .LVU55
- 205 0004 8091 0000 		lds r24,intr0_flag
-  38:main.c        **** 		{
- 206               		.loc 1 38 5 view .LVU56
- 207 0008 8823      		tst r24
- 208 000a 01F0      		breq .L9
-  40:main.c        **** 			intr0_flag = 0;
- 209               		.loc 1 40 4 is_stmt 1 view .LVU57
- 210 000c 8AE0      		ldi r24,lo8(10)
- 211 000e 0E94 0000 		call beep
- 212               	.LVL12:
-  41:main.c        **** 		}
- 213               		.loc 1 41 4 view .LVU58
-  41:main.c        **** 		}
- 214               		.loc 1 41 15 is_stmt 0 view .LVU59
- 215 0012 1092 0000 		sts intr0_flag,__zero_reg__
- 216               	.L9:
-  43:main.c        **** 		{
- 217               		.loc 1 43 3 is_stmt 1 view .LVU60
-  43:main.c        **** 		{
- 218               		.loc 1 43 6 is_stmt 0 view .LVU61
- 219 0016 8091 0000 		lds r24,intr2_flag
-  43:main.c        **** 		{
- 220               		.loc 1 43 5 view .LVU62
- 221 001a 8823      		tst r24
- 222 001c 01F0      		breq .L10
-  45:main.c        **** 			intr2_flag = 0;
- 223               		.loc 1 45 4 is_stmt 1 view .LVU63
- 224 001e 8AE0      		ldi r24,lo8(10)
- 225 0020 0E94 0000 		call beep
- 226               	.LVL13:
-  46:main.c        **** 		}
- 227               		.loc 1 46 4 view .LVU64
-  46:main.c        **** 		}
- 228               		.loc 1 46 15 is_stmt 0 view .LVU65
- 229 0024 1092 0000 		sts intr2_flag,__zero_reg__
- 230               	.L10:
-  48:main.c        **** 	}
- 231               		.loc 1 48 3 is_stmt 1 view .LVU66
- 232               	.LVL14:
- 233               	.LBB10:
- 234               	.LBI10:
+  59               		.loc 2 187 2 view .LVU12
+  60 0018 2FEF      		ldi r18,lo8(7999999)
+  61 001a 31E1      		ldi r19,hi8(7999999)
+  62 001c 4AE7      		ldi r20,hlo8(7999999)
+  63 001e 2150      	1:	subi r18,1
+  64 0020 3040      		sbci r19,0
+  65 0022 4040      		sbci r20,0
+  66 0024 01F4      		brne 1b
+  67 0026 00C0      		rjmp .
+  68 0028 0000      		nop
+  69               	.LBE7:
+  70               	.LBE6:
+  10:main.c        **** 	lcd_init();
+  71               		.loc 1 10 10 is_stmt 0 view .LVU13
+  72 002a 90E0      		ldi r25,0
+  73 002c 80E0      		ldi r24,0
+  17:main.c        **** 	while(1)
+  18:main.c        **** 	{
+  19:main.c        **** 		// start conversion
+  20:main.c        **** 		ADCSRA |= BV(ADSC);
+  21:main.c        **** 
+  22:main.c        **** 		if(adc_flag)
+  23:main.c        **** 		{
+  24:main.c        **** 			sprintf(str, "adc val: %04d", adc_val, cnt++);
+  25:main.c        **** 			lcd_putstring(1, str);
+  26:main.c        **** 			adc_flag = 0;
+  27:main.c        **** 		}
+  28:main.c        **** 		else
+  29:main.c        **** 		{
+  30:main.c        **** 			sprintf(cnt_str, "adc intr (%02d)", cnt++);
+  74               		.loc 1 30 4 view .LVU14
+  75 002e 20E0      		ldi r18,lo8(.LC1)
+  76 0030 E22E      		mov r14,r18
+  77 0032 20E0      		ldi r18,hi8(.LC1)
+  78 0034 F22E      		mov r15,r18
+  79 0036 9E01      		movw r18,r28
+  80 0038 2F5F      		subi r18,-1
+  81 003a 3F4F      		sbci r19,-1
+  82 003c 6901      		movw r12,r18
+  24:main.c        **** 			lcd_putstring(1, str);
+  83               		.loc 1 24 4 view .LVU15
+  84 003e 30E0      		ldi r19,lo8(.LC0)
+  85 0040 A32E      		mov r10,r19
+  86 0042 30E0      		ldi r19,hi8(.LC0)
+  87 0044 B32E      		mov r11,r19
+  88 0046 8E01      		movw r16,r28
+  89 0048 0B5E      		subi r16,-21
+  90 004a 1F4F      		sbci r17,-1
+  91               	.LVL3:
+  92               	.L4:
+  17:main.c        **** 	while(1)
+  93               		.loc 1 17 2 is_stmt 1 view .LVU16
+  20:main.c        **** 
+  94               		.loc 1 20 3 view .LVU17
+  20:main.c        **** 
+  95               		.loc 1 20 10 is_stmt 0 view .LVU18
+  96 004c 369A      		sbi 0x6,6
+  22:main.c        **** 		{
+  97               		.loc 1 22 3 is_stmt 1 view .LVU19
+  22:main.c        **** 		{
+  98               		.loc 1 22 6 is_stmt 0 view .LVU20
+  99 004e 2091 0000 		lds r18,adc_flag
+ 100 0052 3091 0000 		lds r19,adc_flag+1
+ 101 0056 4C01      		movw r8,r24
+ 102 0058 4FEF      		ldi r20,-1
+ 103 005a 841A      		sub r8,r20
+ 104 005c 940A      		sbc r9,r20
+  22:main.c        **** 		{
+ 105               		.loc 1 22 5 view .LVU21
+ 106 005e 232B      		or r18,r19
+ 107 0060 01F0      		breq .L2
+  24:main.c        **** 			lcd_putstring(1, str);
+ 108               		.loc 1 24 4 is_stmt 1 view .LVU22
+ 109               	.LVL4:
+  24:main.c        **** 			lcd_putstring(1, str);
+ 110               		.loc 1 24 4 is_stmt 0 view .LVU23
+ 111 0062 2091 0000 		lds r18,adc_val
+ 112 0066 3091 0000 		lds r19,adc_val+1
+ 113 006a 9F93      		push r25
+ 114 006c 8F93      		push r24
+ 115 006e 3F93      		push r19
+ 116 0070 2F93      		push r18
+ 117 0072 BF92      		push r11
+ 118 0074 AF92      		push r10
+ 119 0076 1F93      		push r17
+ 120 0078 0F93      		push r16
+ 121 007a 0E94 0000 		call sprintf
+ 122               	.LVL5:
+  25:main.c        **** 			adc_flag = 0;
+ 123               		.loc 1 25 4 is_stmt 1 view .LVU24
+ 124 007e B801      		movw r22,r16
+ 125 0080 81E0      		ldi r24,lo8(1)
+ 126 0082 0E94 0000 		call lcd_putstring
+ 127               	.LVL6:
+  26:main.c        **** 		}
+ 128               		.loc 1 26 4 view .LVU25
+  26:main.c        **** 		}
+ 129               		.loc 1 26 13 is_stmt 0 view .LVU26
+ 130 0086 1092 0000 		sts adc_flag+1,__zero_reg__
+ 131 008a 1092 0000 		sts adc_flag,__zero_reg__
+ 132 008e 0FB6      		in __tmp_reg__,__SREG__
+ 133 0090 F894      		cli
+ 134 0092 DEBF      		out __SP_H__,r29
+ 135 0094 0FBE      		out __SREG__,__tmp_reg__
+ 136 0096 CDBF      		out __SP_L__,r28
+ 137               	.LVL7:
+ 138               	.L3:
+  31:main.c        **** 			lcd_putstring(0, cnt_str);
+  32:main.c        **** 		}
+  33:main.c        **** 		_delay_ms(200);
+ 139               		.loc 1 33 3 is_stmt 1 view .LVU27
+ 140               	.LBB8:
+ 141               	.LBI8:
  166:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** {
- 235               		.loc 2 166 1 view .LVU67
- 236               	.LBB11:
+ 142               		.loc 2 166 1 view .LVU28
+ 143               	.LBB9:
  168:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
- 237               		.loc 2 168 2 view .LVU68
+ 144               		.loc 2 168 2 view .LVU29
  172:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
- 238               		.loc 2 172 2 view .LVU69
+ 145               		.loc 2 172 2 view .LVU30
  173:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
- 239               		.loc 2 173 2 view .LVU70
+ 146               		.loc 2 173 2 view .LVU31
  174:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 
- 240               		.loc 2 174 2 view .LVU71
+ 147               		.loc 2 174 2 view .LVU32
  184:/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/util/delay.h **** 	#endif
- 241               		.loc 2 184 3 view .LVU72
- 242               		.loc 2 187 2 view .LVU73
- 243 0028 2FEF      		ldi r18,lo8(319999)
- 244 002a 81EE      		ldi r24,hi8(319999)
- 245 002c 94E0      		ldi r25,hlo8(319999)
- 246 002e 2150      	1:	subi r18,1
- 247 0030 8040      		sbci r24,0
- 248 0032 9040      		sbci r25,0
- 249 0034 01F4      		brne 1b
- 250 0036 00C0      		rjmp .
- 251 0038 0000      		nop
- 252 003a 00C0      		rjmp .L11
- 253               	.LBE11:
- 254               	.LBE10:
- 255               		.cfi_endproc
- 256               	.LFE7:
- 258               		.text
- 259               	.global	__vector_1
- 261               	__vector_1:
- 262               	.LFB11:
- 103:main.c        **** 
- 104:main.c        **** ISR(INT0_vect)
- 105:main.c        **** {
- 263               		.loc 1 105 1 view -0
- 264               		.cfi_startproc
- 265 0064 8F93      		__gcc_isr 1
- 266               	/* prologue: Signal */
- 267               	/* frame size = 0 */
- 268               	/* stack size = 0...4 */
- 269               	.L__stack_usage = 0 + __gcc_isr.n_pushed
- 106:main.c        **** 	intr0_flag = 1;
- 270               		.loc 1 106 2 view .LVU75
- 271               		.loc 1 106 13 is_stmt 0 view .LVU76
- 272 0066 81E0      		ldi r24,lo8(1)
- 273 0068 8093 0000 		sts intr0_flag,r24
- 274               	/* epilogue start */
- 107:main.c        **** }
- 275               		.loc 1 107 1 view .LVU77
- 276 006c 8F91      		__gcc_isr 2
- 277 006e 1895      		reti
- 278               		__gcc_isr 0,r24
- 279               		.cfi_endproc
- 280               	.LFE11:
- 282               	.global	__vector_3
- 284               	__vector_3:
- 285               	.LFB12:
- 108:main.c        **** 
- 109:main.c        **** ISR(INT2_vect)
- 110:main.c        **** {
- 286               		.loc 1 110 1 is_stmt 1 view -0
- 287               		.cfi_startproc
- 288 0070 8F93      		__gcc_isr 1
- 289               	/* prologue: Signal */
- 290               	/* frame size = 0 */
- 291               	/* stack size = 0...4 */
- 292               	.L__stack_usage = 0 + __gcc_isr.n_pushed
- 111:main.c        **** 	intr2_flag = 1;
- 293               		.loc 1 111 2 view .LVU79
- 294               		.loc 1 111 13 is_stmt 0 view .LVU80
- 295 0072 81E0      		ldi r24,lo8(1)
- 296 0074 8093 0000 		sts intr2_flag,r24
- 297               	/* epilogue start */
- 112:main.c        **** }
- 298               		.loc 1 112 1 view .LVU81
- 299 0078 8F91      		__gcc_isr 2
- 300 007a 1895      		reti
- 301               		__gcc_isr 0,r24
- 302               		.cfi_endproc
- 303               	.LFE12:
- 305               	.global	intr2_flag
- 306               		.section .bss
- 309               	intr2_flag:
- 310 0000 00        		.zero	1
- 311               	.global	intr0_flag
- 314               	intr0_flag:
- 315 0001 00        		.zero	1
- 316               		.text
- 317               	.Letext0:
- 318               		.file 3 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/stdint.h"
- 319               		.file 4 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/lib/gcc/avr/8.2.0/include/stdde
- 320               		.file 5 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/stdio.h"
+ 148               		.loc 2 184 3 view .LVU33
+ 149               		.loc 2 187 2 view .LVU34
+ 150 0098 9FEF      		ldi r25,lo8(319999)
+ 151 009a 21EE      		ldi r18,hi8(319999)
+ 152 009c 34E0      		ldi r19,hlo8(319999)
+ 153 009e 9150      	1:	subi r25,1
+ 154 00a0 2040      		sbci r18,0
+ 155 00a2 3040      		sbci r19,0
+ 156 00a4 01F4      		brne 1b
+ 157 00a6 00C0      		rjmp .
+ 158 00a8 0000      		nop
+ 159 00aa C401      		movw r24,r8
+ 160 00ac 00C0      		rjmp .L4
+ 161               	.LVL8:
+ 162               	.L2:
+ 163               		.loc 2 187 2 is_stmt 0 view .LVU35
+ 164               	.LBE9:
+ 165               	.LBE8:
+  30:main.c        **** 			lcd_putstring(0, cnt_str);
+ 166               		.loc 1 30 4 is_stmt 1 view .LVU36
+  30:main.c        **** 			lcd_putstring(0, cnt_str);
+ 167               		.loc 1 30 4 is_stmt 0 view .LVU37
+ 168 00ae 9F93      		push r25
+ 169 00b0 8F93      		push r24
+ 170 00b2 FF92      		push r15
+ 171 00b4 EF92      		push r14
+ 172 00b6 DF92      		push r13
+ 173 00b8 CF92      		push r12
+ 174 00ba 0E94 0000 		call sprintf
+ 175               	.LVL9:
+  31:main.c        **** 		}
+ 176               		.loc 1 31 4 is_stmt 1 view .LVU38
+ 177 00be B601      		movw r22,r12
+ 178 00c0 80E0      		ldi r24,0
+ 179 00c2 0E94 0000 		call lcd_putstring
+ 180               	.LVL10:
+ 181 00c6 0F90      		pop __tmp_reg__
+ 182 00c8 0F90      		pop __tmp_reg__
+ 183 00ca 0F90      		pop __tmp_reg__
+ 184 00cc 0F90      		pop __tmp_reg__
+ 185 00ce 0F90      		pop __tmp_reg__
+ 186 00d0 0F90      		pop __tmp_reg__
+ 187 00d2 00C0      		rjmp .L3
+ 188               		.cfi_endproc
+ 189               	.LFE7:
+ 191               		.text
+ 192               	.Letext0:
+ 193               		.file 3 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/stdint.h"
+ 194               		.file 4 "/home/sunbeam/D_day/AVR/softwares/avr-gcc-8.2.0-x64-linux/avr/include/stdio.h"
+ 195               		.file 5 "adc_intr.h"
+ 196               		.file 6 "lcd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/ccTun51C.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccTun51C.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccTun51C.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccTun51C.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccTun51C.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccTun51C.s:12     .text:0000000000000000 init
-     /tmp/ccTun51C.s:73     .text:0000000000000028 delay_s
-     /tmp/ccTun51C.s:122    .text:0000000000000042 beep
-     /tmp/ccTun51C.s:190    .text.startup:0000000000000000 main
-     /tmp/ccTun51C.s:314    .bss:0000000000000001 intr0_flag
-     /tmp/ccTun51C.s:309    .bss:0000000000000000 intr2_flag
-     /tmp/ccTun51C.s:261    .text:0000000000000064 __vector_1
-                            *ABS*:0000000000000001 __gcc_isr.n_pushed.001
-     /tmp/ccTun51C.s:284    .text:0000000000000070 __vector_3
-                            *ABS*:0000000000000001 __gcc_isr.n_pushed.002
+     /tmp/ccacJuei.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccacJuei.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccacJuei.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccacJuei.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccacJuei.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccacJuei.s:18     .text.startup:0000000000000000 main
 
 UNDEFINED SYMBOLS
-__do_clear_bss
+lcd_init
+adc_init
+adc_flag
+adc_val
+sprintf
+lcd_putstring
+__do_copy_data

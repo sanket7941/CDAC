@@ -1,4 +1,4 @@
- #----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 # WinAVR Makefile Template written by Eric B. Weddington, J�rg Wunsch, et al.
 #
 # Released to the Public Domain
@@ -66,7 +66,7 @@ TARGET = main
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c lcd.c
+SRC = $(TARGET).c
 
 
 # List Assembler source files here.
