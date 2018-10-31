@@ -1,0 +1,5 @@
+/home/sunbeam/CDAC/EOS/assignment/read.c: In function ‘main’:
+/home/sunbeam/CDAC/EOS/assignment/read.c:15:15: error: ‘test’ undeclared (first use in this function)
+   read = open(test.txt ,O_RDONLY);
+               ^
+/home/sunbeam/CDAC/EOS/assignment/read.c:15:15: note: each undeclared identifier is reported only once for each function it appears in
