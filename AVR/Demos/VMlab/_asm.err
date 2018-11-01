@@ -1,0 +1,17 @@
+Creating   'led.eep'
+Creating   'led.hex'
+Creating   'led.obj'
+Creating   'led.lis'
+Creating   'led.map'
+
+Assembling 'led.asm'
+Including  'C:\VMLAB\include\m32def.inc'
+
+Program memory usage:
+Code             :   33 words
+Constants (dw/db):    0 words
+Unused           :    0 words
+Total            :   33 words
+
+Assembly complete with no errors.
+Deleting   'led.eep'
