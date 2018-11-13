@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	GCC = fork();
 	if ( GCC == 0)
 	{
-		GCC = execl("/usr/bin/gcc", "gcc", argv[1],argv[2],argv[3],NULL);
+		GCC = execl("/usr/bin/gcc", "gcc", "-c",argv[1],argv[2],NULL);
 		if(GCC < 0)
 		{
 			perror("exec() failed");
