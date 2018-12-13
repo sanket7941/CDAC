@@ -3,12 +3,12 @@
 #include <linux/kernel.h>
 
 // module init -- entrypoint
-int __init init_module(void)
+static int __init desd_init(void)
 {
 	// module init code
 	
 	// print some statement into the kernel log -- /var/log/messages -- dmesg
-	printk("Hello, Linux Kernel!\n");
+	printk(KERN_INFO "%s: Hello, Linux Kernel!\n", THIS_MODULE->name);
 	
 	// return 0 for successful loading/initializing of module
 	// return -ve value for error
@@ -16,17 +16,20 @@ int __init init_module(void)
 }
 
 // module exit -- entrypoint
-void __exit cleanup_module(void)
+static void __exit desd_exit(void)
 {
 	// module de-init code
 	
 	// print some statement into the kernel log -- /var/log/messages -- dmesg
-	printk("Bye, Linux Kernel!\n");
+	printk(KERN_INFO "%s: Bye, Linux Kernel!\n", THIS_MODULE->name);
 }
 
-MODULE_INFO(license, "GPL");
-MODULE_INFO(author, "Nilesh Ghule<nilesh@sunbeaminfo.com>");
-MODULE_INFO(description, "Hello kernel module developed for DESD Aug 2018 batch at Sunbeam Infotech, Pune");
+module_init(desd_init);
+module_exit(desd_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("SANKET NAIK");
+MODULE_DESCRIPTION("basic code for device driver ");
 
 
 

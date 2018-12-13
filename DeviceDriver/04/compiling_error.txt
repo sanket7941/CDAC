@@ -1,0 +1,4 @@
+/home/sunbeam/CDAC/DeviceDriver/04/pchar.c:2:24: fatal error: linux/init.h: No such file or directory
+ #include <linux/init.h>
+                        ^
+compilation terminated.
