@@ -1,0 +1,4 @@
+/home/sunbeam/CDAC/DataStructure/CPP/Q/Cq.cpp:1:19: fatal error: iostrem: No such file or directory
+ #include <iostrem>
+                   ^
+compilation terminated.
