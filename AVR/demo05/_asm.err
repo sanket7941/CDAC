@@ -1,0 +1,17 @@
+Creating   'demo05.eep'
+Creating   'demo05.hex'
+Creating   'demo05.obj'
+Creating   'demo05.lis'
+Creating   'demo05.map'
+
+Assembling 'demo05.asm'
+Including  'C:\VMLAB\include\m32def.inc'
+
+Program memory usage:
+Code             :   64 words
+Constants (dw/db):    0 words
+Unused           :    0 words
+Total            :   64 words
+
+Assembly complete with no errors.
+Deleting   'demo05.eep'
