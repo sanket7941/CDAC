@@ -19,27 +19,27 @@ void handleRoot() {
 
 void handleRedLED() {
   Serial.println("Request is received for /redled");
-  
+
   String ledState = server.arg("state");
   if (ledState == "on") {
     digitalWrite(16, HIGH);
   } else if (ledState == "off") {
     digitalWrite(16, LOW);
   }
-  
+
   server.send(200, "text/html", "<h1>RED LED toggled</h1>");
 }
 
 void handleYellowLED() {
   Serial.println("Request is received for /yellowled");
-  
+
   String ledState = server.arg("state");
   if (ledState == "on") {
     digitalWrite(5, HIGH);
   } else if (ledState == "off") {
     digitalWrite(5, LOW);
   }
-  
+
   server.send(200, "text/html", "<h1>YELLOW LED toggled</h1>");
 }
 
@@ -51,7 +51,7 @@ void setup() {
   pinMode(5, OUTPUT);
 
   Serial.println("welcome to my web server");
-  
+
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
@@ -59,7 +59,7 @@ void setup() {
     delay(500);
     Serial.print(" . ");
   }
-  
+
   Serial.println("");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
@@ -67,9 +67,9 @@ void setup() {
   server.on("/", handleRoot);
   server.on("/redled", handleRedLED);
   server.on("/yellowled", handleYellowLED);
-  
+
   server.begin();
-  
+
   Serial.println("Server started listening on port 80");
 }
 
