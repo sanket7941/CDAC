@@ -49,6 +49,7 @@ void lcd_puts(uint8_t line,unsigned char s[])
 	int i;
 	// set line addr: 0x80 or 0xC0
 	lcd_send_byte(LCD_CMD, line);
+
 	// send all chars one by one.
 	for(i=0; s[i]!='\0'; i++)
 		lcd_send_byte(LCD_DATA, s[i]);
@@ -57,8 +58,8 @@ void lcd_puts(uint8_t line,unsigned char s[])
 void lcd_init(void)
 {
 	// make data & ctrl ports as output
-	LCD_DATA_GPIO->FIODIR |= (BV(LCD_D7)|BV(LCD_D6)|BV(LCD_D5)|BV(LCD_D4)); 
-	LCD_CTRL_GPIO->FIODIR |= (BV(LCD_RS)|BV(LCD_RW)|BV(LCD_EN)); 
+	LCD_DATA_GPIO->FIODIR |= (BV(LCD_D7)|BV(LCD_D6)|BV(LCD_D5)|BV(LCD_D4));
+	LCD_CTRL_GPIO->FIODIR |= (BV(LCD_RS)|BV(LCD_RW)|BV(LCD_EN));
 
 	// reset delay for lcd.
 	SW_DELAY_MS(300);
@@ -68,7 +69,6 @@ void lcd_init(void)
 	lcd_send_byte(LCD_CMD, LCD_DISPON);
 	lcd_send_byte(LCD_CMD, LCD_ADDRINCR);
 	lcd_send_byte(LCD_CMD, LCD_CLEAR);
-	
+
 	SW_DELAY_MS(100);
 }
-

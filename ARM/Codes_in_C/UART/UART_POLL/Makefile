@@ -1,7 +1,7 @@
 
 
 ######################################################################################
-# GNU GCC ARM Embeded Toolchain base directories and binaries 
+# GNU GCC ARM Embeded Toolchain base directories and binaries
 ######################################################################################
 GCC_BASE = /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/
 GCC_BIN  = $(GCC_BASE)bin/
@@ -15,7 +15,7 @@ OBJCOPY  = $(GCC_BIN)arm-none-eabi-objcopy
 
 
 ######################################################################################
-# Custom options for cortex-m and cortex-r processors 
+# Custom options for cortex-m and cortex-r processors
 ######################################################################################
 CORTEX_M0PLUS_CC_FLAGS  = -mthumb -mcpu=cortex-m0plus
 CORTEX_M0PLUS_LIB_PATH  = $(GCC_LIB)armv6-m
@@ -57,34 +57,34 @@ CORTEX_R5_HWFP_LIB_PATH = $(GCC_LIB)armv7-r/thumb/fpu
 PROJECT           = basic
 MCU_CC_FLAGS      = $(CORTEX_M3_CC_FLAGS)
 MCU_LIB_PATH      = $(CORTEX_M3_LIB_PATH)
-OPTIMIZE_FOR      = 
-DEBUG_LEVEL       = 
-OPTIM_LEVEL       = 
+OPTIMIZE_FOR      =
+DEBUG_LEVEL       =
+OPTIM_LEVEL       =
 LINKER_SCRIPT     = ./LPC1768.ld
 PROJECT_OBJECTS   = main.o startup_LPC17xx.o system_LPC17xx.o
-PROJECT_OBJECTS   += 
+PROJECT_OBJECTS   += lcd.o uart.o
 PROJECT_INC_PATHS = -I.
 PROJECT_LIB_PATHS = -L.
 PROJECT_LIBRARIES =
-PROJECT_SYMBOLS   = -DTOOLCHAIN_GCC_ARM -DNO_RELOC='0'  
+PROJECT_SYMBOLS   = -DTOOLCHAIN_GCC_ARM -DNO_RELOC='0'
 
 
 ######################################################################################
 # Main makefile system configuration
 ######################################################################################
-SYS_OBJECTS = 
-SYS_INC_PATHS = -I. -I$(GCC_INC) 
+SYS_OBJECTS =
+SYS_INC_PATHS = -I. -I$(GCC_INC)
 SYS_LIB_PATHS = -L$(MCU_LIB_PATH)
 ifeq (OPTIMIZE_FOR, SIZE)
 SYS_LIBRARIES = -lstdc++_s -lsupc++_s -lm -lc_s -lg_s -lnosys
 SYS_LD_FLAGS  = --specs=nano.specs -u _printf_float -u _scanf_float
-else 
+else
 SYS_LIBRARIES = -lstdc++ -lsupc++ -lm -lc -lg -lnosys
-SYS_LD_FLAGS  = 
+SYS_LD_FLAGS  =
 endif
 
 
-############################################################################### 
+###############################################################################
 # Command line building
 ###############################################################################
 ifdef DEBUG_LEVEL
@@ -93,24 +93,24 @@ CC_SYMBOLS = -DDEBUG $(PROJECT_SYMBOLS)
 else
 CC_DEBUG_FLAGS =
 CC_SYMBOLS = -DNODEBUG $(PROJECT_SYMBOLS)
-endif 
+endif
 
 ifdef OPTIM_LEVEL
 CC_OPTIM_FLAGS = -O$(OPTIM_LEVEL)
-else 
-CC_OPTIM_FLAGS = 
+else
+CC_OPTIM_FLAGS =
 endif
 
 INCLUDE_PATHS = $(PROJECT_INC_LIB) $(SYS_INC_PATHS)
 LIBRARY_PATHS = $(PROJECT_LIB_LIB) $(SYS_LIB_PATHS)
-CC_FLAGS = $(MCU_CC_FLAGS) -c $(CC_OPTIM_FLAGS) $(CC_DEBUG_FLAGS) -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections 
-LD_FLAGS = $(MCU_CC_FLAGS) -Wl,--gc-sections $(SYS_LD_FLAGS) -Wl,-Map=$(PROJECT).map 
+CC_FLAGS = $(MCU_CC_FLAGS) -c $(CC_OPTIM_FLAGS) $(CC_DEBUG_FLAGS) -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections
+LD_FLAGS = $(MCU_CC_FLAGS) -Wl,--gc-sections $(SYS_LD_FLAGS) -Wl,-Map=$(PROJECT).map
 LD_SYS_LIBS = $(SYS_LIBRARIES)
 
 BULD_TARGET = $(PROJECT)
 
 
-############################################################################### 
+###############################################################################
 # Makefile execution
 ###############################################################################
 
@@ -141,6 +141,3 @@ program:
 	mount /dev/sdb /mnt
 	dd if=$(PROJECT).bin of=/mnt/firmware.bin conv=nocreat,notrunc
 	umount /mnt
-
-
-

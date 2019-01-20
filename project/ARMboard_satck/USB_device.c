@@ -5,7 +5,6 @@
 #include "usbapi.h"
 #include "usbdebug.h"
 #include "usbstruct.h"
-#include "spi.h"
 #include "uart.h"
 
 #include "LPC17xx.h"
@@ -132,30 +131,21 @@ static const unsigned char abDescriptors[] = {
  */
 static void BulkOut(unsigned char bEP, unsigned char bEPStatus)
 {
-
-
-//	lcd_puts(LCD_LINE1, "SUN INFO");
+	// bulkout =>  PC to blueBoard
 	int iLen;
-	int data;
-	//long lHigherPriorityTaskWoken = pdFALSE;
-
 
 	( void ) bEPStatus;
 
+	lcd_puts(LCD_LINE1, "BulkOut ");
 	// get data from USB into intermediate buffer
 	iLen = USBHwEPRead(bEP, abBulkBuf, sizeof(abBulkBuf));
+
 	lcd_puts(LCD_LINE2, abBulkBuf);
 
-	data = (int)strtol((char*)abBulkBuf, NULL, 16);       // number base 16
-
-	spi_transfer(data);
-	UartPuts(data);
+	uart_puts(abBulkBuf[0]); // send data over uart to GSM
 }
-
-
 /**
 	Local function to handle outgoing bulk data
-
 	@param [in] bEP
 	@param [in] bEPStatus
  */
@@ -164,16 +154,16 @@ static void BulkIn(unsigned char bEP, unsigned char bEPStatus)
 {
 	//long lHigherPriorityTaskWoken = pdFALSE;
 
+	// BulkIn BlueBoard to PC
 	( void ) bEPStatus;
 
-//	lcd_puts(LCD_LINE1, abBulkBuf);
+	lcd_puts(LCD_LINE1,"BulkIn ");
 
-	USBHwEPWrite(bEP, abBulkBuf, 64);
-
-//	lcd_puts(LCD_LINE2, abBulkBuf);
+//	uart_gets(abBulkBuf);
+	sprintf(abBulkBuf,"%s","bulkin data to PC");
+	lcd_puts(LCD_LINE2, abBulkBuf);
 
 	// send over USB
-
 	USBHwEPWrite(bEP, abBulkBuf, 64);
 
 }
@@ -186,12 +176,10 @@ void USB_IRQHandler(void)
 
 int main(void)
 {
-	unsigned char abc[10]= "HELLO";
 	SystemInit();
 	// initialise stack
 	USBInit();
-	// spi_init();
-	UARTinit(9600);
+	uart_init(9600);  // UART initialise
 	// register descriptors
 	USBRegisterDescriptors(abDescriptors);
 
@@ -205,8 +193,9 @@ int main(void)
 	USBHwNakIntEnable(INACK_BI);
 
 	DBG("Starting USB communication\n");
-	lcd_init();
-	lcd_puts(LCD_LINE1,abc );
+
+	lcd_init();  // initialise LCD
+	lcd_puts(LCD_LINE1,"LDD for UART" );
 	//NVIC_SetPriority( USB_IRQn, configUSB_INTERRUPT_PRIORITY );
 	NVIC_EnableIRQ( USB_IRQn );
 

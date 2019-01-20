@@ -45,13 +45,15 @@ Discarded input sections
  .text          0x00000000        0x0 system_LPC17xx.o
  .data          0x00000000        0x0 system_LPC17xx.o
  .bss           0x00000000        0x0 system_LPC17xx.o
- .data.SystemCoreClock
-                0x00000000        0x4 system_LPC17xx.o
  .text.SystemCoreClockUpdate
                 0x00000000      0x284 system_LPC17xx.o
  .text._exit    0x00000000        0xc system_LPC17xx.o
- .text.sw_delay
-                0x00000000       0x40 system_LPC17xx.o
+ .text          0x00000000        0x0 lcd.o
+ .data          0x00000000        0x0 lcd.o
+ .bss           0x00000000        0x0 lcd.o
+ .text          0x00000000        0x0 uart.o
+ .data          0x00000000        0x0 uart.o
+ .bss           0x00000000        0x0 uart.o
  .text          0x00000000        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
  .data          0x00000000        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
  .bss           0x00000000        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
@@ -137,6 +139,8 @@ LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm
 LOAD main.o
 LOAD startup_LPC17xx.o
 LOAD system_LPC17xx.o
+LOAD lcd.o
+LOAD uart.o
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libstdc++.a
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libsupc++.a
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libm.a
@@ -156,81 +160,113 @@ END GROUP
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
 LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
 
-.text           0x00002000      0x3f0
+.text           0x00002000      0x840
  *(.isr_vector)
  .isr_vector    0x00002000       0xc4 startup_LPC17xx.o
                 0x00002000                g_pfnVectors
  *(.text*)
  .text          0x000020c4       0x5c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
- .text.main     0x00002120        0xc main.o
+ .text.main     0x00002120       0x4c main.o
                 0x00002120                main
  .text.Reset_Handler
-                0x0000212c       0x70 startup_LPC17xx.o
-                0x0000212c                Reset_Handler
+                0x0000216c       0x70 startup_LPC17xx.o
+                0x0000216c                Reset_Handler
  .text.Default_Handler
-                0x0000219c        0x8 startup_LPC17xx.o
-                0x0000219c                TIMER2_IRQHandler
-                0x0000219c                DebugMon_Handler
-                0x0000219c                RIT_IRQHandler
-                0x0000219c                I2C0_IRQHandler
-                0x0000219c                SysTick_Handler
-                0x0000219c                PWM1_IRQHandler
-                0x0000219c                PendSV_Handler
-                0x0000219c                I2C1_IRQHandler
-                0x0000219c                EINT2_IRQHandler
-                0x0000219c                UART1_IRQHandler
-                0x0000219c                EINT3_IRQHandler
-                0x0000219c                TIMER3_IRQHandler
-                0x0000219c                UART0_IRQHandler
-                0x0000219c                UsageFault_Handler
-                0x0000219c                PLL0_IRQHandler
-                0x0000219c                CAN_IRQHandler
-                0x0000219c                PLL1_IRQHandler
-                0x0000219c                SSP0_IRQHandler
-                0x0000219c                I2S_IRQHandler
-                0x0000219c                I2C2_IRQHandler
-                0x0000219c                RTC_IRQHandler
-                0x0000219c                TIMER0_IRQHandler
-                0x0000219c                SPI_IRQHandler
-                0x0000219c                EINT1_IRQHandler
-                0x0000219c                TIMER1_IRQHandler
-                0x0000219c                UART2_IRQHandler
-                0x0000219c                Default_Handler
-                0x0000219c                ADC_IRQHandler
-                0x0000219c                SSP1_IRQHandler
-                0x0000219c                USB_IRQHandler
-                0x0000219c                BOD_IRQHandler
-                0x0000219c                MemManage_Handler
-                0x0000219c                WDT_IRQHandler
-                0x0000219c                SVC_Handler
-                0x0000219c                QEI_IRQHandler
-                0x0000219c                EINT0_IRQHandler
-                0x0000219c                DMA_IRQHandler
-                0x0000219c                BusFault_Handler
-                0x0000219c                UART3_IRQHandler
-                0x0000219c                MCPWM_IRQHandler
-                0x0000219c                ENET_IRQHandler
+                0x000021dc        0x8 startup_LPC17xx.o
+                0x000021dc                TIMER2_IRQHandler
+                0x000021dc                DebugMon_Handler
+                0x000021dc                RIT_IRQHandler
+                0x000021dc                I2C0_IRQHandler
+                0x000021dc                SysTick_Handler
+                0x000021dc                PWM1_IRQHandler
+                0x000021dc                PendSV_Handler
+                0x000021dc                I2C1_IRQHandler
+                0x000021dc                EINT2_IRQHandler
+                0x000021dc                UART1_IRQHandler
+                0x000021dc                EINT3_IRQHandler
+                0x000021dc                TIMER3_IRQHandler
+                0x000021dc                UART0_IRQHandler
+                0x000021dc                UsageFault_Handler
+                0x000021dc                PLL0_IRQHandler
+                0x000021dc                CAN_IRQHandler
+                0x000021dc                PLL1_IRQHandler
+                0x000021dc                SSP0_IRQHandler
+                0x000021dc                I2S_IRQHandler
+                0x000021dc                I2C2_IRQHandler
+                0x000021dc                RTC_IRQHandler
+                0x000021dc                TIMER0_IRQHandler
+                0x000021dc                SPI_IRQHandler
+                0x000021dc                EINT1_IRQHandler
+                0x000021dc                TIMER1_IRQHandler
+                0x000021dc                UART2_IRQHandler
+                0x000021dc                Default_Handler
+                0x000021dc                ADC_IRQHandler
+                0x000021dc                SSP1_IRQHandler
+                0x000021dc                USB_IRQHandler
+                0x000021dc                BOD_IRQHandler
+                0x000021dc                MemManage_Handler
+                0x000021dc                WDT_IRQHandler
+                0x000021dc                SVC_Handler
+                0x000021dc                QEI_IRQHandler
+                0x000021dc                EINT0_IRQHandler
+                0x000021dc                DMA_IRQHandler
+                0x000021dc                BusFault_Handler
+                0x000021dc                MCPWM_IRQHandler
+                0x000021dc                ENET_IRQHandler
  .text.SystemInit
-                0x000021a4      0x13c system_LPC17xx.o
-                0x000021a4                SystemInit
+                0x000021e4      0x13c system_LPC17xx.o
+                0x000021e4                SystemInit
+ .text.sw_delay
+                0x00002320       0x40 system_LPC17xx.o
+                0x00002320                sw_delay
+ .text.LCDInit  0x00002360       0x58 lcd.o
+                0x00002360                LCDInit
+ .text.busy     0x000023b8       0x58 lcd.o
+                0x000023b8                busy
+ .text.SendData
+                0x00002410       0x48 lcd.o
+                0x00002410                SendData
+ .text.sendnibble
+                0x00002458       0x74 lcd.o
+                0x00002458                sendnibble
+ .text.enterdata
+                0x000024cc       0x48 lcd.o
+                0x000024cc                enterdata
+ .text.NVIC_EnableIRQ
+                0x00002514       0x30 uart.o
+ .text.uart_init
+                0x00002544       0x80 uart.o
+                0x00002544                uart_init
+ .text.uart_getch
+                0x000025c4       0x28 uart.o
+                0x000025c4                uart_getch
+ .text.uart_puts
+                0x000025ec       0x54 uart.o
+                0x000025ec                uart_puts
+ .text.uart_gets
+                0x00002640       0x4c uart.o
+                0x00002640                uart_gets
+ .text.UART3_IRQHandler
+                0x0000268c       0x70 uart.o
+                0x0000268c                UART3_IRQHandler
  .text.startup.register_fini
-                0x000022e0       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x000022f4        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
-                0x000022f4                atexit
+                0x000026fc       0x14 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x00002710        0xc /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                0x00002710                atexit
  .text.__libc_fini_array
-                0x00002300       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
-                0x00002300                __libc_fini_array
+                0x0000271c       0x28 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                0x0000271c                __libc_fini_array
  .text.__register_exitproc
-                0x00002328       0xa4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
-                0x00002328                __register_exitproc
+                0x00002744       0xa4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                0x00002744                __register_exitproc
  *(.init)
- .init          0x000023cc        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
-                0x000023cc                _init
- .init          0x000023d0        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+ .init          0x000027e8        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
+                0x000027e8                _init
+ .init          0x000027ec        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
  *(.fini)
- .fini          0x000023d8        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
-                0x000023d8                _fini
- .fini          0x000023dc        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+ .fini          0x000027f4        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crti.o
+                0x000027f4                _fini
+ .fini          0x000027f8        0x8 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
  *crtbegin.o(.ctors)
  *crtbegin?.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
@@ -242,95 +278,107 @@ LOAD /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm
  *(SORT(.dtors.*))
  *(.dtors)
  *(.rodata*)
+ .rodata        0x00002800       0x2e main.o
+ *fill*         0x0000282e        0x2 
+ .rodata        0x00002830        0x1 uart.o
+ *fill*         0x00002831        0x3 
  .rodata.str1.4
-                0x000023e4        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x00002834        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
                                   0x2 (size before relaxing)
  .rodata._global_impure_ptr
-                0x000023e8        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
-                0x000023e8                _global_impure_ptr
+                0x00002838        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x00002838                _global_impure_ptr
  *(.eh_frame*)
- .eh_frame      0x000023ec        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
- .eh_frame      0x000023ec        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
+ .eh_frame      0x0000283c        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+ .eh_frame      0x0000283c        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
 
-.glue_7         0x000023f0        0x0
- .glue_7        0x000023f0        0x0 linker stubs
+.glue_7         0x00002840        0x0
+ .glue_7        0x00002840        0x0 linker stubs
 
-.glue_7t        0x000023f0        0x0
- .glue_7t       0x000023f0        0x0 linker stubs
+.glue_7t        0x00002840        0x0
+ .glue_7t       0x00002840        0x0 linker stubs
 
-.vfp11_veneer   0x000023f0        0x0
- .vfp11_veneer  0x000023f0        0x0 linker stubs
+.vfp11_veneer   0x00002840        0x0
+ .vfp11_veneer  0x00002840        0x0 linker stubs
 
-.v4_bx          0x000023f0        0x0
- .v4_bx         0x000023f0        0x0 linker stubs
+.v4_bx          0x00002840        0x0
+ .v4_bx         0x00002840        0x0 linker stubs
 
-.iplt           0x000023f0        0x0
- .iplt          0x000023f0        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.iplt           0x00002840        0x0
+ .iplt          0x00002840        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.rel.dyn        0x000023f0        0x0
- .rel.iplt      0x000023f0        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.rel.dyn        0x00002840        0x0
+ .rel.iplt      0x00002840        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x000023f0                __exidx_start = .
+                0x00002840                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x000023f0                __exidx_end = .
-                0x000023f0                __etext = .
-                0x000023f0                __sidata = __etext
+                0x00002840                __exidx_end = .
+                0x00002840                __etext = .
+                0x00002840                __sidata = __etext
 
-.data           0x100000c8      0x434 load address 0x000023f0
+.data           0x100000c8      0x444 load address 0x00002840
                 0x100000c8                __data_start__ = .
  *(vtable)
  *(.data*)
+ .data.SystemCoreClock
+                0x100000c8        0x4 system_LPC17xx.o
+                0x100000c8                SystemCoreClock
+ .data.tx_string
+                0x100000cc        0x4 uart.o
+ .data.tx_flag  0x100000d0        0x4 uart.o
+ *fill*         0x100000d4        0x4 
  .data.impure_data
-                0x100000c8      0x428 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
-                0x100004f0                . = ALIGN (0x4)
-                0x100004f0                PROVIDE (__preinit_array_start, .)
+                0x100000d8      0x428 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x10000500                . = ALIGN (0x4)
+                0x10000500                PROVIDE (__preinit_array_start, .)
  *(.preinit_array)
-                0x100004f0                PROVIDE (__preinit_array_end, .)
-                0x100004f0                . = ALIGN (0x4)
-                0x100004f0                PROVIDE (__init_array_start, .)
+                0x10000500                PROVIDE (__preinit_array_end, .)
+                0x10000500                . = ALIGN (0x4)
+                0x10000500                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  .init_array.00000
-                0x100004f0        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+                0x10000500        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
  *(.init_array)
- .init_array    0x100004f4        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
-                0x100004f8                PROVIDE (__init_array_end, .)
-                0x100004f8                . = ALIGN (0x4)
-                0x100004f8                PROVIDE (__fini_array_start, .)
+ .init_array    0x10000504        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+                0x10000508                PROVIDE (__init_array_end, .)
+                0x10000508                . = ALIGN (0x4)
+                0x10000508                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*))
  *(.fini_array)
- .fini_array    0x100004f8        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
-                0x100004fc                PROVIDE (__fini_array_end, .)
-                0x100004fc                . = ALIGN (0x4)
-                0x100004fc                __data_end__ = .
+ .fini_array    0x10000508        0x4 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+                0x1000050c                PROVIDE (__fini_array_end, .)
+                0x1000050c                . = ALIGN (0x4)
+                0x1000050c                __data_end__ = .
 
-.jcr            0x100004fc        0x0 load address 0x00002824
- .jcr           0x100004fc        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.jcr            0x1000050c        0x0 load address 0x00002c84
+ .jcr           0x1000050c        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.igot.plt       0x100004fc        0x0 load address 0x00002824
- .igot.plt      0x100004fc        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.igot.plt       0x1000050c        0x0 load address 0x00002c84
+ .igot.plt      0x1000050c        0x0 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.stackarea      0x100004fc      0x800 load address 0x00002824
- .stackarea     0x100004fc      0x800 startup_LPC17xx.o
-                0x100004fc                pulStack
+.stackarea      0x1000050c      0x800 load address 0x00002c84
+ .stackarea     0x1000050c      0x800 startup_LPC17xx.o
+                0x1000050c                pulStack
 
-.bss            0x10000cfc       0x1c load address 0x00003024
-                0x10000cfc                __bss_start__ = .
+.bss            0x10000d0c       0x20 load address 0x00003484
+                0x10000d0c                __bss_start__ = .
  *(.bss*)
- .bss           0x10000cfc       0x1c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+ .bss           0x10000d0c       0x1c /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+ .bss.tx_index  0x10000d28        0x4 uart.o
  *(COMMON)
-                0x10000d18                __bss_end__ = .
+                0x10000d2c                __bss_end__ = .
 
-.heap           0x10000d18        0x0
-                0x10000d18                __end__ = .
-                0x10000d18                end = __end__
+.heap           0x10000d2c        0x0
+                0x10000d2c                __end__ = .
+                0x10000d2c                end = __end__
  *(.heap*)
-                0x10000d18                __HeapLimit = .
+                0x10000d2c                __HeapLimit = .
 
-.stack_dummy    0x10000d18        0x0
+.stack_dummy    0x10000d2c        0x0
  *(.stack)
                 0x10008000                __StackTop = (ORIGIN (RAM) + LENGTH (RAM))
                 0x10008000                __StackLimit = (__StackTop - SIZEOF (.stack_dummy))
@@ -351,25 +399,31 @@ OUTPUT(basic.elf elf32-littlearm)
  .ARM.attributes
                 0x000000b0       0x33 system_LPC17xx.o
  .ARM.attributes
-                0x000000e3       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x000000e3       0x33 lcd.o
  .ARM.attributes
-                0x00000110       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+                0x00000116       0x33 uart.o
  .ARM.attributes
-                0x0000013d       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                0x00000149       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
  .ARM.attributes
-                0x0000016a       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                0x00000176       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
  .ARM.attributes
-                0x00000197       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                0x000001a3       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
  .ARM.attributes
-                0x000001c4       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
+                0x000001d0       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
  .ARM.attributes
-                0x000001f1       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
+                0x000001fd       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .ARM.attributes
+                0x0000022a       0x2d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtend.o
+ .ARM.attributes
+                0x00000257       0x1d /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtn.o
 
 .comment        0x00000000       0x6e
  .comment       0x00000000       0x6e main.o
                                  0x6f (size before relaxing)
  .comment       0x0000006e       0x6f startup_LPC17xx.o
  .comment       0x0000006e       0x6f system_LPC17xx.o
+ .comment       0x0000006e       0x6f lcd.o
+ .comment       0x0000006e       0x6f uart.o
 
 .debug_frame    0x00000000       0xd8
  .debug_frame   0x00000000       0x50 /home/sunbeam/ARM/Toolchain/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)

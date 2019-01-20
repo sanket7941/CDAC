@@ -9,13 +9,14 @@
 
 
 /****************** defines  *********************/
-#define MIN(a,b) (((a) <=(b)) ? (a):(b))
+#define MIN(a,b) ((a) <= (b) ? (a):(b))
 
 #define BULK_EP_OUT 0x08
 #define BULK_EP_IN 0x82
-#define MAX_PKT_SIZE 64
+// #define MAX_PKT_SIZE 64
 #define USB_MINOR_BASE	192 /* Get a minor range for your devices from the usb maintainer */
-#define MAX_TRANSFER		(PAGE_SIZE - 512)
+#define MAX_TRANSFER 64
+//#define MAX_TRANSFER		(PAGE_SIZE - 512)
 #define to_usb_uart_dev(d) container_of(d, struct usb_uart,kref)
 
 #define USB_SPI_VENDOR_ID 0xffff
@@ -43,8 +44,8 @@ struct usb_uart
 	size_t			   bulk_in_size;		/* the size of the receive buffer */
 	// size_t			bulk_in_filled;		/* number of bytes in the buffer */
 	// size_t			bulk_in_copied;		/* already copied to user space */
+	__u8    bulk_in_endpointAddr;	/* the address of the bulk in endpoint */
 
-  __u8    bulk_in_endpointAddr;	/* the address of the bulk in endpoint */
 	__u8		bulk_out_endpointAddr;	/* the address of the bulk out endpoint */
 	int			errors;			/* the last request tanked */
 };
@@ -114,13 +115,20 @@ static ssize_t uart_read(struct file *file,char __user *buffer,size_t count,loff
 	dev = file->private_data;
 	printk("read () called... \n");
 		/*read data from bulk endpoint*/
-		retval = usb_bulk_msg(dev->udev,usb_rcvbulkpipe(dev->udev,dev->bulk_in_endpointAddr),dev->bulk_in_buffer,MIN(count,dev->bulk_in_size),&cnt,5000);
+		retval = 	usb_bulk_msg(dev->udev,
+							usb_rcvbulkpipe(dev->udev,dev->bulk_in_endpointAddr),
+							dev->bulk_in_buffer,
+							MAX_TRANSFER,
+							&cnt,5000);
 		/*if read was successful,copy the data to the user sapce*/
+		printk("blkin buffer= %s \n",dev->bulk_in_buffer);
+		printk("retval= %d \n",retval);
 
-		printk("read() 1...\n");
 		if(!retval)
 		{
-			if(copy_to_user(buffer,dev->bulk_in_buffer,MIN(cnt,count))){
+			printk("inside !retval ...\n");
+			if(copy_to_user(buffer,dev->bulk_in_buffer,MIN(cnt,count))) {
+				printk("inside copy to user \n");
 				retval = -EFAULT;
 			}
 			else{
@@ -135,7 +143,7 @@ static ssize_t uart_read(struct file *file,char __user *buffer,size_t count,loff
 static ssize_t uart_write(struct file *file,const char *user_buffer,size_t count,loff_t *off)
 {
 	int retval;
-	int cnt = MIN(cnt, MAX_TRANSFER);
+	int cnt = MIN(count, MAX_TRANSFER);
 
 	struct usb_uart *dev;
 
@@ -150,7 +158,7 @@ static ssize_t uart_write(struct file *file,const char *user_buffer,size_t count
 
 		/*write data into  bulk endpoint*/
 		printk("write() 1 ...\n");
-		retval = usb_bulk_msg(dev->udev,
+		retval = 		usb_bulk_msg(dev->udev,
 			 					usb_sndbulkpipe(dev->udev,dev->bulk_out_endpointAddr),
 								dev->bulk_in_buffer,
 								MIN(count,MAX_TRANSFER),
@@ -190,7 +198,7 @@ static struct file_operations uart_fops =
 	{
 		struct usb_uart *dev;
 		struct usb_host_interface *iface_desc;
-		struct usb_endpoint_descriptor* endpoint;//, *bulk_in, *bulk_out;
+		struct usb_endpoint_descriptor* endpoint;
 		size_t buffer_size;
 		int retval = -ENOMEM;
 		int i;
@@ -258,7 +266,7 @@ static struct file_operations uart_fops =
 		}
 
 		/* let the user know what node this device is now attached to */
-		dev_info(&interface->dev,"USB uart device now attached to USBSkel-%d",
+		dev_info(&interface->dev,"USB uart device now attached to USB-%d",
 			 interface->minor);
 		return retval;
 
@@ -297,8 +305,29 @@ static struct file_operations uart_fops =
 	    .disconnect=uart_disconnect,
 	  };
 
-void module_uart_driver( uart_driver);
+static int __init uart_init(void)
+	{
+			int result;
+			printk("init is called");
+			/* register this driver with the USB subsystem */
+			result = usb_register(&uart_driver);
+			if (result)
+				printk("usb_register failed. Error number %d", result);
+			return result;
+	}
+
+	static void __exit uart_exit(void)
+	{
+		printk("exit is called");
+	/* deregister this driver with the USB subsystem */
+		usb_deregister(&uart_driver);
+	}
+
+module_uart_driver( uart_driver);
+
+module_init(uart_init);
+module_exit(uart_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("sanket<sanketn7941@gmail.com");
-MODULE_DESCRIPTION("this is USB_Device Driver Module for  BBonboard uart");
+MODULE_DESCRIPTION("this is USB_Device Driver Module for  BB onboard uart");

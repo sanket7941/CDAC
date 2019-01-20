@@ -1,1 +1,0 @@
-cmd_/home/sunbeam/D_day/project/deviceDriver/uart_DD.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/sunbeam/D_day/project/deviceDriver/uart_DD.ko /home/sunbeam/D_day/project/deviceDriver/uart_DD.o /home/sunbeam/D_day/project/deviceDriver/uart_DD.mod.o
