@@ -133,6 +133,7 @@ static void BulkOut(unsigned char bEP, unsigned char bEPStatus)
 {
 	// bulkout =>  PC to blueBoard
 	int iLen;
+	char str[64];
 
 	( void ) bEPStatus;
 
@@ -141,8 +142,9 @@ static void BulkOut(unsigned char bEP, unsigned char bEPStatus)
 	iLen = USBHwEPRead(bEP, abBulkBuf, sizeof(abBulkBuf));
 
 	lcd_puts(LCD_LINE2, abBulkBuf);
+	sprintf(str,"%s",abBulkBuf);
 
-	uart_puts(abBulkBuf[0]); // send data over uart to GSM
+	uart_puts(str); // send data over uart to GSM
 }
 /**
 	Local function to handle outgoing bulk data
@@ -159,8 +161,8 @@ static void BulkIn(unsigned char bEP, unsigned char bEPStatus)
 
 	lcd_puts(LCD_LINE1,"BulkIn ");
 
-//	uart_gets(abBulkBuf);
-	sprintf(abBulkBuf,"%s","bulkin data to PC");
+	uart_gets(abBulkBuf);
+	//sprintf(abBulkBuf,"%s","bulkin data to PC");
 	lcd_puts(LCD_LINE2, abBulkBuf);
 
 	// send over USB
@@ -179,7 +181,9 @@ int main(void)
 	SystemInit();
 	// initialise stack
 	USBInit();
-	uart_init(9600);  // UART initialise
+	uart_init(9600);
+	NVIC_EnableIRQ(UART3_IRQn);
+  // UART initialise
 	// register descriptors
 	USBRegisterDescriptors(abDescriptors);
 
@@ -195,7 +199,7 @@ int main(void)
 	DBG("Starting USB communication\n");
 
 	lcd_init();  // initialise LCD
-	lcd_puts(LCD_LINE1,"LDD for UART" );
+	lcd_puts(LCD_LINE1,"LDD for UART RUN " );
 	//NVIC_SetPriority( USB_IRQn, configUSB_INTERRUPT_PRIORITY );
 	NVIC_EnableIRQ( USB_IRQn );
 

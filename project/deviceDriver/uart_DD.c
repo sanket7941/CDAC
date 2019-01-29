@@ -19,15 +19,15 @@
 //#define MAX_TRANSFER		(PAGE_SIZE - 512)
 #define to_usb_uart_dev(d) container_of(d, struct usb_uart,kref)
 
-#define USB_SPI_VENDOR_ID 0xffff
-#define USB_SPI_PRODUCT_ID 0x0004
+#define USB_VENDOR_ID 0xffff
+#define USB_PRODUCT_ID 0x0004
 
 unsigned char buf[64];
 
 /* ID table */
 static struct usb_device_id uart_table[]=
 {
-	{  USB_DEVICE(USB_SPI_VENDOR_ID,USB_SPI_PRODUCT_ID) },
+	{  USB_DEVICE(USB_VENDOR_ID,USB_PRODUCT_ID) },
 	{} //terminating entry
 };
 
